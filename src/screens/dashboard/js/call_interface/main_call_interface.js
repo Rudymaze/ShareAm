@@ -22,6 +22,12 @@ const eachUserWrapper = document.getElementById("each-user-wrapper");
 const backNav = document.getElementById("back-nav");
 const sidebarContainer = document.getElementById("sidebar-container");
 const addUser = document.querySelector(".add-user");
+const copyMeetingLink = document.querySelector(".copy-meeting-link");
+const activateCameraIcon = document.getElementById("camera-icon");
+const toggleMicButton = document.getElementById("live-mic");
+const activeMicIcon = document.getElementById("active-mic-icon");
+const localVideo = document.getElementById("localVideo");
+const waveShadow = document.getElementById("wave-shadows");
 
 const getTotalParticipants = () => {
   totalParticipants.textContent = participants.length;
@@ -524,14 +530,13 @@ const handleMeetingState = () => {
   if (meetingToken) {
     sidebarContainer.style.display = "none";
     backNav.style.display = "block";
-    addUser.classList.add("copy-meeting-link");
-    addUser.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg"  height="20" width="20" viewBox="0 0 448 512">
-    <path fill="#101623" d="M208 0L332.1 0c12.7 0 24.9 5.1 33.9 14.1l67.9 67.9c9 9 14.1 21.2 14.1 33.9L448 336c0 26.5-21.5 48-48 48l-192 0c-26.5 0-48-21.5-48-48l0-288c0-26.5 21.5-48 48-48zM48 128l80 0 0 64-64 0 0 256 192 0 0-32 64 0 0 48c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 176c0-26.5 21.5-48 48-48z"/>
-    </svg>
-    <p class="copy-meeting-link-txt">Copy meeting link</p>`;
+    // copyMeetingLink.style.display = "block";
+    addUser.style.display = "none";
   } else {
     sidebarContainer.style.display = "block";
     backNav.style.display = "none";
+    copyMeetingLink.style.display = "none";
+    // addUser.style.display = "block";
   }
 };
 
@@ -549,12 +554,6 @@ const handleEndCall = () => {
 backNav.addEventListener("click", handleEndCall);
 
 // ---------- ACTIVATION OF CAMERA AND MIC ---------- //
-const activateCameraIcon = document.getElementById("camera-icon");
-const toggleMicButton = document.getElementById("live-mic");
-const activeMicIcon = document.getElementById("active-mic-icon");
-const localVideo = document.getElementById("localVideo");
-const waveShadow = document.getElementById("wave-shadows");
-
 let localStream;
 let micEnabled = true; // Microphone state
 let cameraEnabled = false; // Camera state
@@ -595,7 +594,8 @@ activateCameraIcon.addEventListener("click", async () => {
       activateCameraIcon.innerHTML = `<svg
                   xmlns="http://www.w3.org/2000/svg"  width="24"
                   height="19" fill="#acacac" viewBox="0 0 640 512">
-                  <path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7l-86.4-67.7 13.8 9.2c9.8 6.5 22.4 7.2 32.9 1.6s16.9-16.4 16.9-28.2l0-256c0-11.8-6.5-22.6-16.9-28.2s-23-5-32.9 1.6l-96 64L448 174.9l0 17.1 0 128 0 5.8-32-25.1L416 128c0-35.3-28.7-64-64-64L113.9 64 38.8 5.1zM407 416.7L32.3 121.5c-.2 2.1-.3 4.3-.3 6.5l0 256c0 35.3 28.7 64 64 64l256 0c23.4 0 43.9-12.6 55-31.3z"/></svg>`;
+                  <path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7l-86.4-67.7 13.8 9.2c9.8 6.5 22.4 7.2 32.9 1.6s16.9-16.4 16.9-28.2l0-256c0-11.8-6.5-22.6-16.9-28.2s-23-5-32.9 1.6l-96 64L448 174.9l0 17.1 0 128 0 5.8-32-25.1L416 128c0-35.3-28.7-64-64-64L113.9 64 38.8 5.1zM407 416.7L32.3 121.5c-.2 2.1-.3 4.3-.3 6.5l0 256c0 35.3 28.7 64 64 64l256 0c23.4 0 43.9-12.6 55-31.3z"/>
+              </svg>`;
     }
   } catch (error) {
     statuss.textContent = "Error accessing media devices.";

@@ -135,8 +135,13 @@ ul {
   gap: 0.8vw;
 }
 
-.add-user {
+.add-user-wrapper {
   height: 30px;
+  display: flex;
+  gap: 0.8vw;
+}
+
+.add-user {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -145,7 +150,6 @@ ul {
 }
 
 .copy-meeting-link {
-  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -386,7 +390,7 @@ ul {
   justify-content: center;
   cursor: pointer;
   background-color: #fff;
-  padding: 3vh 0.7vw;
+  padding: 2.6vh 0.7vw;
   border-radius: 17px;
 }
 

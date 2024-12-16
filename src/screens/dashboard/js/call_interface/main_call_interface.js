@@ -558,6 +558,12 @@ let localStream;
 let micEnabled = true; // Microphone state
 let cameraEnabled = false; // Camera state
 
+// Add new variables for audio processing
+let audioContext;
+let analyser;
+let microphone;
+let isVisualizing = false; // Flag to control the visualization loop
+
 // Toggle camera
 activateCameraIcon.addEventListener("click", async () => {
   try {
@@ -603,7 +609,52 @@ activateCameraIcon.addEventListener("click", async () => {
   }
 });
 
-// Toggle microphone
+// Function to initialize audio processing
+async function initAudioProcessing() {
+  try {
+    // Create an audio context
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    // Create an analyser node
+    analyser = audioContext.createAnalyser();
+    analyser.fftSize = 256;
+
+    // Connect the microphone stream
+    microphone = audioContext.createMediaStreamSource(localStream);
+    microphone.connect(analyser);
+
+    // Start visualizing audio levels
+    visualizeAudio();
+  } catch (err) {
+    console.error("Error initializing audio processing:", err);
+  }
+}
+
+// Function to visualize audio levels
+function visualizeAudio() {
+  const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+  function update() {
+    if (!isVisualizing) return; // Stop if visualization is disabled
+
+    analyser.getByteFrequencyData(dataArray);
+    const maxVolume = Math.max(...dataArray); // Detect sound level
+
+    // Check if there is sound
+    if (maxVolume > 50) {
+      console.log("Sound detected:", maxVolume);
+      waveShadow.style.display = "block"; // Example: Show an animation
+    } else {
+      console.log("No sound detected");
+      waveShadow.style.display = "none"; // Example: Hide animation
+    }
+
+    requestAnimationFrame(update); // Continue the loop
+  }
+
+  update(); // Start the loop
+}
+
+// Toggle microphone with visualization control
 toggleMicButton.addEventListener("click", () => {
   if (!localStream) return;
 
@@ -653,6 +704,19 @@ toggleMicButton.addEventListener("click", () => {
             </g>
             </g>
             </svg>`;
+
     toggleMicButton.prepend(activeMicIcon);
+
+    if (micEnabled) {
+      // Start visualization if not already started
+      if (!audioContext) {
+        initAudioProcessing(); // Initialize processing if first time
+      }
+      isVisualizing = true; // Enable visualization
+      visualizeAudio(); // Start visualization loop
+    } else {
+      isVisualizing = false; // Disable visualization
+      waveShadow.style.display = "none"; // Hide visualization if mic is off
+    }
   }
 });

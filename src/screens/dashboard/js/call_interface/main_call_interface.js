@@ -554,15 +554,19 @@ const handleEndCall = () => {
 backNav.addEventListener("click", handleEndCall);
 
 // ---------- ACTIVATION OF CAMERA AND MIC ---------- //
+
+const waveShadow1 = document.querySelector(".wave-shadow-1");
+const waveShadow2 = document.querySelector(".wave-shadow-2");
+
 let localStream;
-let micEnabled = true; // Microphone state
+let micEnabled = false; // Microphone state
 let cameraEnabled = false; // Camera state
 
-// Add new variables for audio processing
 let audioContext;
 let analyser;
-let microphone;
-let isVisualizing = false; // Flag to control the visualization loop
+let microphoneStream;
+let gainNode;
+let animationFrameId;
 
 // Toggle camera
 activateCameraIcon.addEventListener("click", async () => {
@@ -609,63 +613,16 @@ activateCameraIcon.addEventListener("click", async () => {
   }
 });
 
-// Function to initialize audio processing
-async function initAudioProcessing() {
-  try {
-    // Create an audio context
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    // Create an analyser node
-    analyser = audioContext.createAnalyser();
-    analyser.fftSize = 256;
-
-    // Connect the microphone stream
-    microphone = audioContext.createMediaStreamSource(localStream);
-    microphone.connect(analyser);
-
-    // Start visualizing audio levels
-    visualizeAudio();
-  } catch (err) {
-    console.error("Error initializing audio processing:", err);
+// Toggle microphone state
+toggleMicButton.addEventListener("click", async () => {
+  if (micEnabled) {
+    stopMicrophone();
+  } else {
+    await startMicrophone();
   }
-}
-
-// Function to visualize audio levels
-function visualizeAudio() {
-  const dataArray = new Uint8Array(analyser.frequencyBinCount);
-
-  function update() {
-    if (!isVisualizing) return; // Stop if visualization is disabled
-
-    analyser.getByteFrequencyData(dataArray);
-    const maxVolume = Math.max(...dataArray); // Detect sound level
-
-    // Check if there is sound
-    if (maxVolume > 50) {
-      console.log("Sound detected:", maxVolume);
-      waveShadow.style.display = "block"; // Example: Show an animation
-    } else {
-      console.log("No sound detected");
-      waveShadow.style.display = "none"; // Example: Hide animation
-    }
-
-    requestAnimationFrame(update); // Continue the loop
-  }
-
-  update(); // Start the loop
-}
-
-// Toggle microphone with visualization control
-toggleMicButton.addEventListener("click", () => {
-  if (!localStream) return;
-
-  // Get the audio track
-  const audioTrack = localStream.getAudioTracks()[0];
-  if (audioTrack) {
-    micEnabled = !micEnabled; // Toggle the state
-    audioTrack.enabled = micEnabled; // Enable or disable the track
-
-    activeMicIcon.innerHTML = micEnabled
-      ? `<svg
+  micEnabled = !micEnabled;
+  activeMicIcon.innerHTML = micEnabled
+    ? `<svg
               width="17"
               height="19"
               viewBox="0 0 17 18"
@@ -678,7 +635,7 @@ toggleMicButton.addEventListener("click", () => {
               fill="#DAD9D9"
               />
           </svg>`
-      : `<svg
+    : `<svg
               xmlns="http://www.w3.org/2000/svg"
               version="1.1"
               xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -705,18 +662,72 @@ toggleMicButton.addEventListener("click", () => {
             </g>
             </svg>`;
 
-    toggleMicButton.prepend(activeMicIcon);
-
-    if (micEnabled) {
-      // Start visualization if not already started
-      if (!audioContext) {
-        initAudioProcessing(); // Initialize processing if first time
-      }
-      isVisualizing = true; // Enable visualization
-      visualizeAudio(); // Start visualization loop
-    } else {
-      isVisualizing = false; // Disable visualization
-      waveShadow.style.display = "none"; // Hide visualization if mic is off
-    }
-  }
+  toggleMicButton.prepend(activeMicIcon);
 });
+
+// Start microphone and audio detection
+async function startMicrophone() {
+  try {
+    // Request access to the microphone
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+    });
+    microphoneStream = stream;
+
+    // Set up Web Audio API context and analyser
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = audioContext.createAnalyser();
+    gainNode = audioContext.createGain();
+    analyser.fftSize = 256; // Frequency resolution
+    analyser.smoothingTimeConstant = 0.8; // Smooth the frequency data
+
+    const microphoneSource = audioContext.createMediaStreamSource(stream);
+    microphoneSource.connect(analyser);
+    analyser.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    // Start the animation loop
+    animateWave();
+  } catch (err) {
+    console.error("Error accessing microphone", err);
+  }
+}
+
+// Stop the microphone and audio detection
+function stopMicrophone() {
+  if (microphoneStream) {
+    const tracks = microphoneStream.getTracks();
+    tracks.forEach((track) => track.stop());
+  }
+  if (audioContext) {
+    audioContext.close();
+  }
+  cancelAnimationFrame(animationFrameId);
+  waveShadow1.style.width = "140px"; // Reset size
+  waveShadow1.style.height = "140px"; // Reset size
+  waveShadow2.style.width = "110px"; // Reset size
+  waveShadow2.style.height = "110px"; // Reset size
+}
+
+// Animate wave based on detected audio level
+function animateWave() {
+  const bufferLength = analyser.frequencyBinCount;
+  const dataArray = new Uint8Array(bufferLength);
+  analyser.getByteFrequencyData(dataArray);
+
+  let sum = 0;
+  for (let i = 0; i < dataArray.length; i++) {
+    sum += dataArray[i];
+  }
+
+  const average = sum / dataArray.length;
+  const expansionFactor = average / 2.5; // Scale the expansion based on detected audio
+
+  // Animate the wave shadows expanding and contracting
+  waveShadow1.style.width = 140 + expansionFactor + "px";
+  waveShadow1.style.height = 140 + expansionFactor + "px";
+  waveShadow2.style.width = 110 + expansionFactor + "px";
+  waveShadow2.style.height = 110 + expansionFactor + "px";
+
+  animationFrameId = requestAnimationFrame(animateWave);
+}

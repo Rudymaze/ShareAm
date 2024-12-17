@@ -426,7 +426,7 @@ ul {
 
 .wave span {
   width: 0.3vw;
-  background-color: #303030;
+  background-color: #000;
   border-radius: 4px;
 }
 
@@ -443,7 +443,7 @@ ul {
 }
 
 .span-4 {
-  height: 100%;
+  height: 80%;
 }
 
 .span-5 {
@@ -451,7 +451,7 @@ ul {
 }
 
 .span-6 {
-  height: 90%;
+  height: 77%;
 }
 
 .now-text {

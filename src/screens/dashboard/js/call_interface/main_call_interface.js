@@ -28,6 +28,14 @@ const toggleMicButton = document.getElementById("live-mic");
 const activeMicIcon = document.getElementById("active-mic-icon");
 const localVideo = document.getElementById("localVideo");
 const waveShadow = document.getElementById("wave-shadows");
+const waveShadow1 = document.querySelector(".wave-shadow-1");
+const waveShadow2 = document.querySelector(".wave-shadow-2");
+const waveline1 = document.querySelector(".span-1");
+const waveline2 = document.querySelector(".span-2");
+const waveline3 = document.querySelector(".span-3");
+const waveline4 = document.querySelector(".span-4");
+const waveline5 = document.querySelector(".span-5");
+const waveline6 = document.querySelector(".span-6");
 
 const getTotalParticipants = () => {
   totalParticipants.textContent = participants.length;
@@ -554,14 +562,9 @@ const handleEndCall = () => {
 backNav.addEventListener("click", handleEndCall);
 
 // ---------- ACTIVATION OF CAMERA AND MIC ---------- //
-
-const waveShadow1 = document.querySelector(".wave-shadow-1");
-const waveShadow2 = document.querySelector(".wave-shadow-2");
-
 let localStream;
 let micEnabled = false; // Microphone state
 let cameraEnabled = false; // Camera state
-
 let audioContext;
 let analyser;
 let microphoneStream;
@@ -707,6 +710,12 @@ function stopMicrophone() {
   waveShadow1.style.height = "140px"; // Reset size
   waveShadow2.style.width = "110px"; // Reset size
   waveShadow2.style.height = "110px"; // Reset size
+  waveline1.style.height = "30%";
+  waveline2.style.height = "70%";
+  waveline3.style.height = "40%";
+  waveline4.style.height = "80%";
+  waveline5.style.height = "50%";
+  waveline6.style.height = "77%";
 }
 
 // Animate wave based on detected audio level
@@ -728,6 +737,11 @@ function animateWave() {
   waveShadow1.style.height = 140 + expansionFactor + "px";
   waveShadow2.style.width = 110 + expansionFactor + "px";
   waveShadow2.style.height = 110 + expansionFactor + "px";
-
+  waveline1.style.height = 30 + expansionFactor + "%";
+  waveline2.style.height = 70 + expansionFactor + "%";
+  waveline3.style.height = 40 + expansionFactor + "%";
+  waveline4.style.height = 80 + expansionFactor + "%";
+  waveline5.style.height = 50 + expansionFactor + "%";
+  waveline6.style.height = 77 + expansionFactor + "%";
   animationFrameId = requestAnimationFrame(animateWave);
 }

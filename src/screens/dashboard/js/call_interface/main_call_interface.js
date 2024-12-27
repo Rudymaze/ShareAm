@@ -37,8 +37,7 @@ const waveline4 = document.querySelector(".span-4");
 const waveline5 = document.querySelector(".span-5");
 const waveline6 = document.querySelector(".span-6");
 const waves = document.querySelector(".caller-photo");
-const localVideo = document.getElementById("localVideo");
-const waveShadow = document.getElementById("wave-shadows");
+const lineWave = document.querySelectorAll(".line-wave");
 
 // let isSharing = false;
 
@@ -606,12 +605,6 @@ const handleEndCall = () => {
 backNav.addEventListener("click", handleEndCall);
 
 // ---------- ACTIVATION OF CAMERA AND MIC ---------- //
-const activateCameraIcon = document.getElementById("camera-icon");
-const toggleMicButton = document.getElementById("live-mic");
-const activeMicIcon = document.getElementById("active-mic-icon");
-// const localVideo = document.getElementById("localVideo");
-// const waveShadow = document.getElementById("wave-shadows");
-
 let localStream;
 let micEnabled = false; // Microphone state
 let cameraEnabled = false; // Camera state
@@ -620,14 +613,13 @@ let analyser;
 let microphoneStream;
 let gainNode;
 let animationFrameId;
+let microphone;
 
 // Toggle camera
 activateCameraIcon.addEventListener("click", async () => {
   try {
     if (!cameraEnabled) {
-      // Turn on the camera
       localStream = await navigator.mediaDevices.getUserMedia({
-        audio: true,
         video: true,
       });
       localVideo.srcObject = localStream;
@@ -646,12 +638,11 @@ activateCameraIcon.addEventListener("click", async () => {
                     />
                   </svg>`;
     } else {
-      // Turn off the camera
       if (localStream) {
         const videoTrack = localStream.getVideoTracks()[0];
-        if (videoTrack) videoTrack.stop(); // Stop the video track
+        if (videoTrack) videoTrack.stop();
       }
-      localVideo.srcObject = null; // Clear the video element
+      localVideo.srcObject = null;
       cameraEnabled = false;
       waveShadow.style.display = "block";
       activateCameraIcon.innerHTML = `<svg
@@ -661,21 +652,80 @@ activateCameraIcon.addEventListener("click", async () => {
               </svg>`;
     }
   } catch (error) {
-    // statuss.textContent = "Error accessing media devices.";
     console.error("Error toggling camera:", error);
   }
 });
 
-// Toggle microphone state
-toggleMicButton.addEventListener("click", async () => {
-  if (micEnabled) {
-    stopMicrophone();
-  } else {
-    await startMicrophone();
+// Function to initialize audio processing
+async function initAudioProcessing() {
+  try {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+    analyser = audioContext.createAnalyser();
+    analyser.fftSize = 256;
+
+    microphone = audioContext.createMediaStreamSource(localStream);
+    microphone.connect(analyser);
+
+    visualizeAudio();
+  } catch (err) {
+    console.error("Error initializing audio processing:", err);
   }
-  micEnabled = !micEnabled;
-  activeMicIcon.innerHTML = micEnabled
-    ? `<svg
+}
+
+let isVisualizing = false;
+
+function visualizeAudio() {
+  const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+  function update() {
+    if (!isVisualizing) return;
+
+    analyser.getByteFrequencyData(dataArray);
+    const maxVolume = Math.max(...dataArray);
+
+    if (maxVolume > 50) {
+      waveShadow.style.display = "block";
+      console.log("Sound detected:", maxVolume);
+
+      let lineHeight = maxVolume / 2.55;
+
+      lineWave.forEach((span, index) => {
+        let variation = Math.random() * 20 - 10;
+        span.style.height = `${lineHeight + variation}%`;
+        console.log(`Span ${index} height set to: ${span.style.height}`);
+        console.log(lineHeight);
+      });
+
+      console.log(lineWave);
+    } else {
+      console.log("No sound detected");
+      waveShadow.style.display = "none";
+
+      lineWave.forEach((span) => {
+        span.style.height = "20%";
+      });
+    }
+
+    requestAnimationFrame(update);
+  }
+
+  update();
+}
+
+// Toggle microphone with visualization control
+toggleMicButton.addEventListener("click", async () => {
+  localStream = await navigator.mediaDevices.getUserMedia({
+    audio: true,
+  });
+
+  const audioTrack = localStream.getAudioTracks()[0];
+  if (audioTrack) {
+    micEnabled = !micEnabled;
+    audioTrack.enabled = micEnabled;
+
+    activeMicIcon.innerHTML = micEnabled
+      ? `<svg
               width="17"
               height="19"
               viewBox="0 0 17 18"
@@ -688,7 +738,7 @@ toggleMicButton.addEventListener("click", async () => {
               fill="#DAD9D9"
               />
           </svg>`
-    : `<svg
+      : `<svg
               xmlns="http://www.w3.org/2000/svg"
               version="1.1"
               xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -714,123 +764,102 @@ toggleMicButton.addEventListener("click", async () => {
             </g>
             </g>
             </svg>`;
+    toggleMicButton.prepend(activeMicIcon);
 
-  toggleMicButton.prepend(activeMicIcon);
+    if (micEnabled) {
+      if (!audioContext) {
+        initAudioProcessing();
+      }
+      isVisualizing = true;
+      visualizeAudio();
+    } else {
+      isVisualizing = false;
+      waveShadow.style.display = "none";
+      lineWave.forEach((span) => {
+        span.style.height = "20%";
+      });
+    }
+  }
 });
 
-// Start microphone and audio detection
-async function startMicrophone() {
-  try {
-    // Request access to the microphone
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: true,
-    });
-    microphoneStream = stream;
+// async function startMicrophone() {
+//   try {
 
-    // Set up Web Audio API context and analyser
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    analyser = audioContext.createAnalyser();
-    gainNode = audioContext.createGain();
-    analyser.fftSize = 256; // Frequency resolution
-    analyser.smoothingTimeConstant = 0.8; // Smooth the frequency data
+//     const stream = await navigator.mediaDevices.getUserMedia({
+//       audio: true,
+//     });
+//     microphoneStream = stream;
 
-    const microphoneSource = audioContext.createMediaStreamSource(stream);
-    microphoneSource.connect(analyser);
-    analyser.connect(gainNode);
-    gainNode.connect(audioContext.destination);
+//     audioContext = new (window.AudioContext || window.webkitAudioContext)();
+//     analyser = audioContext.createAnalyser();
+//     gainNode = audioContext.createGain();
+//     analyser.fftSize = 256;
+//     analyser.smoothingTimeConstant = 0.8;
 
-    // Start the animation loop
-    animateWave();
-  } catch (err) {
-    console.error("Error accessing microphone", err);
-  }
-}
+//     const microphoneSource = audioContext.createMediaStreamSource(stream);
+//     microphoneSource.connect(analyser);
+//     analyser.connect(gainNode);
+//     gainNode.connect(audioContext.destination);
 
-// Stop the microphone and audio detection
-function stopMicrophone() {
-  if (microphoneStream) {
-    const tracks = microphoneStream.getTracks();
-    tracks.forEach((track) => track.stop());
-  }
-  if (audioContext) {
-    audioContext.close();
-  }
-  cancelAnimationFrame(animationFrameId);
-  waveShadow1.style.width = "140px"; // Reset size
-  waveShadow1.style.height = "140px"; // Reset size
-  waveShadow2.style.width = "110px"; // Reset size
-  waveShadow2.style.height = "110px"; // Reset size
-  waveline1.style.height = "30%";
-  waveline2.style.height = "70%";
-  waveline3.style.height = "40%";
-  waveline4.style.height = "80%";
-  waveline5.style.height = "50%";
-  waveline6.style.height = "77%";
-}
+//     animateWave();
+//   } catch (err) {
+//     console.error("Error accessing microphone", err);
+//   }
+// }
 
-// Animate wave based on detected audio level
-function animateWave() {
-  const bufferLength = analyser.frequencyBinCount;
-  const dataArray = new Uint8Array(bufferLength);
-  analyser.getByteFrequencyData(dataArray);
+// function stopMicrophone() {
+//   if (microphoneStream) {
+//     const tracks = microphoneStream.getTracks();
+//     tracks.forEach((track) => track.stop());
+//   }
+//   if (audioContext) {
+//     audioContext.close();
+//   }
+//   cancelAnimationFrame(animationFrameId);
+//   resetWaveAnimation();
+// }
 
-  let sum = 0;
-  for (let i = 0; i < dataArray.length; i++) {
-    sum += dataArray[i];
-  }
+// function animateWave() {
+//   const bufferLength = analyser.frequencyBinCount;
+//   const dataArray = new Uint8Array(bufferLength);
+//   analyser.getByteFrequencyData(dataArray);
 
-  const average = sum / dataArray.length;
-  const expansionFactor = average / 2.5; // Scale the expansion based on detected audio
+//   const sampleRate = audioContext.sampleRate;
+//   const dominantFrequency = getDominantFrequency(dataArray, sampleRate);
 
-  // Animate the wave shadows expanding and contracting
-  waveShadow1.style.width = 140 + expansionFactor + "px";
-  waveShadow1.style.height = 140 + expansionFactor + "px";
-  waveShadow2.style.width = 110 + expansionFactor + "px";
-  waveShadow2.style.height = 110 + expansionFactor + "px";
-  waveline1.style.height = 30 + expansionFactor + "%";
-  waveline2.style.height = 70 + expansionFactor + "%";
-  waveline3.style.height = 40 + expansionFactor + "%";
-  waveline4.style.height = 80 + expansionFactor + "%";
-  waveline5.style.height = 50 + expansionFactor + "%";
-  waveline6.style.height = 77 + expansionFactor + "%";
-  animationFrameId = requestAnimationFrame(animateWave);
-}
+//   console.log("Dominant Frequency:", dominantFrequency.toFixed(2), "Hz");
 
-//-----------------Heart Emoji Bubble------------------//
+//   const average = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
+//   const expansionFactor = average / 2.5;
 
-const triggerHeart = document.getElementById("trigger-heart");
-const heartContainer = document.getElementById("heart-container");
-const pathColor = document.getElementById("path-color");
+//   waveShadow1.style.width = 140 + expansionFactor + "px";
+//   waveShadow1.style.height = 140 + expansionFactor + "px";
+//   waveShadow2.style.width = 110 + expansionFactor + "px";
+//   waveShadow2.style.height = 110 + expansionFactor + "px";
 
-triggerHeart.addEventListener("click", function () {
-  pathColor.setAttribute("fill", "red");
+//   animationFrameId = requestAnimationFrame(animateWave);
+// }
 
-  setTimeout(() => {
-    pathColor.setAttribute("fill", "#DAD9D9");
-  }, 2000);
+// function getDominantFrequency(dataArray, sampleRate) {
+//   let maxIndex = 0;
+//   let maxValue = 0;
 
-  const heartCopy = triggerHeart.cloneNode(true);
-  heartCopy.classList.add("heart-copy");
+//   for (let i = 0; i < dataArray.length; i++) {
+//     if (dataArray[i] > maxValue) {
+//       maxValue = dataArray[i];
+//       maxIndex = i;
+//     }
+//   }
 
-  const containerWidth = heartContainer.offsetWidth;
-  const containerHeight = heartContainer.offsetHeight;
+//   const nyquist = sampleRate / 2;
+//   const binSize = nyquist / dataArray.length;
+//   return maxIndex * binSize;
+// }
 
-  const startX = Math.random() * containerWidth + 5;
-  const startY = containerHeight - 150;
+// function resetWaveAnimation() {
+//   waveShadow1.style.width = "140px";
+//   waveShadow1.style.height = "140px";
+//   waveShadow2.style.width = "110px";
+//   waveShadow2.style.height = "110px";
 
-  heartCopy.style.left = `${startX}px`;
-  heartCopy.style.top = `${startY}px`;
-
-  const randomX = Math.random() * 100 - 50;
-  const randomY = Math.random() * -200 - 100;
-  const randomScale = Math.random() * 0.5 + 0.5;
-
-  heartCopy.style.animation = `bubble-up 2s ease-out forwards`;
-  heartCopy.style.transform = `translate(${randomX}px, ${randomY}px) scale(${randomScale})`;
-
-  heartContainer.appendChild(heartCopy);
-
-  heartCopy.addEventListener("animationend", () => {
-    heartCopy.remove();
-  });
-});
+// }

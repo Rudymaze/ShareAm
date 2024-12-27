@@ -36,6 +36,7 @@ const waveline3 = document.querySelector(".span-3");
 const waveline4 = document.querySelector(".span-4");
 const waveline5 = document.querySelector(".span-5");
 const waveline6 = document.querySelector(".span-6");
+const waves = document.querySelector(".caller-photo");
 
 const getTotalParticipants = () => {
   totalParticipants.textContent = participants.length;
@@ -784,3 +785,13 @@ triggerHeart.addEventListener("click", function () {
     heartCopy.remove();
   });
 });
+
+// const copyToClipboard = async (textToCopy) => {
+//   let copyState;
+//   try {
+//     await navigator.clipboard.writeText(textToCopy);
+//     copyState = true;
+//   } catch (err) {
+//     copyState = false;
+//   }
+// };

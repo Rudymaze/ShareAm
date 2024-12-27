@@ -135,8 +135,13 @@ ul {
   gap: 0.8vw;
 }
 
-.add-user {
+.add-user-wrapper {
   height: 30px;
+  display: flex;
+  gap: 0.8vw;
+}
+
+.add-user {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -145,7 +150,6 @@ ul {
 }
 
 .copy-meeting-link {
-  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -257,7 +261,7 @@ ul {
 .interface-section-3 {
   height: 68vh;
   border-radius: 11px;
-  overflow: hidden; 
+  overflow: hidden;
   position: relative;
   display: flex;
   align-items: center;
@@ -283,6 +287,7 @@ ul {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: width 0.2s ease, height 0.2s ease;
 }
 
 .wave-shadow-2 {
@@ -293,6 +298,7 @@ ul {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: width 0.2s ease, height 0.2s ease;
 }
 
 .caller-photo {
@@ -387,7 +393,7 @@ ul {
   justify-content: center;
   cursor: pointer;
   background-color: #fff;
-  padding: 3vh 0.7vw;
+  padding: 2.6vh 0.7vw;
   border-radius: 17px;
 }
 
@@ -411,7 +417,7 @@ ul {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  gap: 0.2vw;
+  gap: 0.4vw;
   width: 3.7vw;
   height: 7vh;
   padding: 1vh 0.3vw;
@@ -420,33 +426,13 @@ ul {
 }
 
 .wave span {
-  width: 0.3vw;
-  background-color: #303030;
+  width: 0.5vw;
+  background-color: #000;
   border-radius: 4px;
 }
 
-.span-1 {
-  height: 30%;
-}
-
-.span-2 {
-  height: 70%;
-}
-
-.span-3 {
-  height: 40%;
-}
-
-.span-4 {
-  height: 100%;
-}
-
-.span-5 {
-  height: 50%;
-}
-
-.span-6 {
-  height: 90%;
+.line-wave {
+  height: 20%;
 }
 
 .now-text {
@@ -1163,7 +1149,33 @@ input:checked + .slider:before {
 }
 /*------End of Toggle Switch Key---------*/
 
+/*-------------------------Heart Emoji Bubble------------------*/
 
+.heart-copy {
+  position: absolute;
+  left: 50%;
+  width: 28px;
+  height: 27px;
+  transform: translate(-50%, 0);
+  opacity: 1;
+  animation: bubble-up 2s ease-out forwards;
+  transition: color 0.3s;
+}
+
+@keyframes bubble-up {
+  0% {
+    transform: translate(-50%, 0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -150px) scale(1.2);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -250px) scale(0.8);
+    opacity: 0;
+  }
+}
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (max-width: 1200px) {
@@ -1224,21 +1236,11 @@ input:checked + .slider:before {
   .wave-shadow-1 {
     height: 70px;
     width: 70px;
-    border-radius: 100%;
-    box-shadow: 0px 0px 15px 7px inset #585858;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
   .wave-shadow-2 {
     height: 55px;
     width: 55px;
-    border-radius: 100%;
-    box-shadow: 0px 0px 15px 7px inset #585858;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
   .caller-photo {

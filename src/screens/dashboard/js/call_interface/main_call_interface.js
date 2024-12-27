@@ -22,8 +22,22 @@ const eachUserWrapper = document.getElementById("each-user-wrapper");
 const backNav = document.getElementById("back-nav");
 const sidebarContainer = document.getElementById("sidebar-container");
 const addUser = document.querySelector(".add-user");
+const copyMeetingLink = document.querySelector(".copy-meeting-link");
+const activateCameraIcon = document.getElementById("camera-icon");
+const toggleMicButton = document.getElementById("live-mic");
+const activeMicIcon = document.getElementById("active-mic-icon");
 const localVideo = document.getElementById("localVideo");
 const waveShadow = document.getElementById("wave-shadows");
+const waveShadow1 = document.querySelector(".wave-shadow-1");
+const waveShadow2 = document.querySelector(".wave-shadow-2");
+const waveline1 = document.querySelector(".span-1");
+const waveline2 = document.querySelector(".span-2");
+const waveline3 = document.querySelector(".span-3");
+const waveline4 = document.querySelector(".span-4");
+const waveline5 = document.querySelector(".span-5");
+const waveline6 = document.querySelector(".span-6");
+const waves = document.querySelector(".caller-photo");
+const lineWave = document.querySelectorAll(".line-wave");
 
 // let isSharing = false;
 
@@ -567,14 +581,13 @@ const handleMeetingState = () => {
   if (meetingToken) {
     sidebarContainer.style.display = "none";
     backNav.style.display = "block";
-    addUser.classList.add("copy-meeting-link");
-    addUser.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg"  height="20" width="20" viewBox="0 0 448 512">
-    <path fill="#101623" d="M208 0L332.1 0c12.7 0 24.9 5.1 33.9 14.1l67.9 67.9c9 9 14.1 21.2 14.1 33.9L448 336c0 26.5-21.5 48-48 48l-192 0c-26.5 0-48-21.5-48-48l0-288c0-26.5 21.5-48 48-48zM48 128l80 0 0 64-64 0 0 256 192 0 0-32 64 0 0 48c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 176c0-26.5 21.5-48 48-48z"/>
-    </svg>
-    <p class="copy-meeting-link-txt">Copy meeting link</p>`;
+    // copyMeetingLink.style.display = "block";
+    addUser.style.display = "none";
   } else {
     sidebarContainer.style.display = "block";
     backNav.style.display = "none";
+    copyMeetingLink.style.display = "none";
+    // addUser.style.display = "block";
   }
 };
 
@@ -592,23 +605,21 @@ const handleEndCall = () => {
 backNav.addEventListener("click", handleEndCall);
 
 // ---------- ACTIVATION OF CAMERA AND MIC ---------- //
-const activateCameraIcon = document.getElementById("camera-icon");
-const toggleMicButton = document.getElementById("live-mic");
-const activeMicIcon = document.getElementById("active-mic-icon");
-// const localVideo = document.getElementById("localVideo");
-// const waveShadow = document.getElementById("wave-shadows");
-
 let localStream;
-let micEnabled = true; // Microphone state
+let micEnabled = false; // Microphone state
 let cameraEnabled = false; // Camera state
+let audioContext;
+let analyser;
+let microphoneStream;
+let gainNode;
+let animationFrameId;
+let microphone;
 
 // Toggle camera
 activateCameraIcon.addEventListener("click", async () => {
   try {
     if (!cameraEnabled) {
-      // Turn on the camera
       localStream = await navigator.mediaDevices.getUserMedia({
-        audio: true,
         video: true,
       });
       localVideo.srcObject = localStream;
@@ -627,34 +638,91 @@ activateCameraIcon.addEventListener("click", async () => {
                     />
                   </svg>`;
     } else {
-      // Turn off the camera
       if (localStream) {
         const videoTrack = localStream.getVideoTracks()[0];
-        if (videoTrack) videoTrack.stop(); // Stop the video track
+        if (videoTrack) videoTrack.stop();
       }
-      localVideo.srcObject = null; // Clear the video element
+      localVideo.srcObject = null;
       cameraEnabled = false;
       waveShadow.style.display = "block";
       activateCameraIcon.innerHTML = `<svg
                   xmlns="http://www.w3.org/2000/svg"  width="24"
                   height="19" fill="#acacac" viewBox="0 0 640 512">
-                  <path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7l-86.4-67.7 13.8 9.2c9.8 6.5 22.4 7.2 32.9 1.6s16.9-16.4 16.9-28.2l0-256c0-11.8-6.5-22.6-16.9-28.2s-23-5-32.9 1.6l-96 64L448 174.9l0 17.1 0 128 0 5.8-32-25.1L416 128c0-35.3-28.7-64-64-64L113.9 64 38.8 5.1zM407 416.7L32.3 121.5c-.2 2.1-.3 4.3-.3 6.5l0 256c0 35.3 28.7 64 64 64l256 0c23.4 0 43.9-12.6 55-31.3z"/></svg>`;
+                  <path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7l-86.4-67.7 13.8 9.2c9.8 6.5 22.4 7.2 32.9 1.6s16.9-16.4 16.9-28.2l0-256c0-11.8-6.5-22.6-16.9-28.2s-23-5-32.9 1.6l-96 64L448 174.9l0 17.1 0 128 0 5.8-32-25.1L416 128c0-35.3-28.7-64-64-64L113.9 64 38.8 5.1zM407 416.7L32.3 121.5c-.2 2.1-.3 4.3-.3 6.5l0 256c0 35.3 28.7 64 64 64l256 0c23.4 0 43.9-12.6 55-31.3z"/>
+              </svg>`;
     }
   } catch (error) {
-    // statuss.textContent = "Error accessing media devices.";
     console.error("Error toggling camera:", error);
   }
 });
 
-// Toggle microphone
-toggleMicButton.addEventListener("click", () => {
-  if (!localStream) return;
+// Function to initialize audio processing
+async function initAudioProcessing() {
+  try {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-  // Get the audio track
+    analyser = audioContext.createAnalyser();
+    analyser.fftSize = 256;
+
+    microphone = audioContext.createMediaStreamSource(localStream);
+    microphone.connect(analyser);
+
+    visualizeAudio();
+  } catch (err) {
+    console.error("Error initializing audio processing:", err);
+  }
+}
+
+let isVisualizing = false;
+
+function visualizeAudio() {
+  const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+  function update() {
+    if (!isVisualizing) return;
+
+    analyser.getByteFrequencyData(dataArray);
+    const maxVolume = Math.max(...dataArray);
+
+    if (maxVolume > 50) {
+      waveShadow.style.display = "block";
+      console.log("Sound detected:", maxVolume);
+
+      let lineHeight = maxVolume / 2.55;
+
+      lineWave.forEach((span, index) => {
+        let variation = Math.random() * 20 - 10;
+        span.style.height = `${lineHeight + variation}%`;
+        console.log(`Span ${index} height set to: ${span.style.height}`);
+        console.log(lineHeight);
+      });
+
+      console.log(lineWave);
+    } else {
+      console.log("No sound detected");
+      waveShadow.style.display = "none";
+
+      lineWave.forEach((span) => {
+        span.style.height = "20%";
+      });
+    }
+
+    requestAnimationFrame(update);
+  }
+
+  update();
+}
+
+// Toggle microphone with visualization control
+toggleMicButton.addEventListener("click", async () => {
+  localStream = await navigator.mediaDevices.getUserMedia({
+    audio: true,
+  });
+
   const audioTrack = localStream.getAudioTracks()[0];
   if (audioTrack) {
-    micEnabled = !micEnabled; // Toggle the state
-    audioTrack.enabled = micEnabled; // Enable or disable the track
+    micEnabled = !micEnabled;
+    audioTrack.enabled = micEnabled;
 
     activeMicIcon.innerHTML = micEnabled
       ? `<svg
@@ -697,9 +765,101 @@ toggleMicButton.addEventListener("click", () => {
             </g>
             </svg>`;
     toggleMicButton.prepend(activeMicIcon);
+
+    if (micEnabled) {
+      if (!audioContext) {
+        initAudioProcessing();
+      }
+      isVisualizing = true;
+      visualizeAudio();
+    } else {
+      isVisualizing = false;
+      waveShadow.style.display = "none";
+      lineWave.forEach((span) => {
+        span.style.height = "20%";
+      });
+    }
   }
 });
 
+// async function startMicrophone() {
+//   try {
 
+//     const stream = await navigator.mediaDevices.getUserMedia({
+//       audio: true,
+//     });
+//     microphoneStream = stream;
 
+//     audioContext = new (window.AudioContext || window.webkitAudioContext)();
+//     analyser = audioContext.createAnalyser();
+//     gainNode = audioContext.createGain();
+//     analyser.fftSize = 256;
+//     analyser.smoothingTimeConstant = 0.8;
 
+//     const microphoneSource = audioContext.createMediaStreamSource(stream);
+//     microphoneSource.connect(analyser);
+//     analyser.connect(gainNode);
+//     gainNode.connect(audioContext.destination);
+
+//     animateWave();
+//   } catch (err) {
+//     console.error("Error accessing microphone", err);
+//   }
+// }
+
+// function stopMicrophone() {
+//   if (microphoneStream) {
+//     const tracks = microphoneStream.getTracks();
+//     tracks.forEach((track) => track.stop());
+//   }
+//   if (audioContext) {
+//     audioContext.close();
+//   }
+//   cancelAnimationFrame(animationFrameId);
+//   resetWaveAnimation();
+// }
+
+// function animateWave() {
+//   const bufferLength = analyser.frequencyBinCount;
+//   const dataArray = new Uint8Array(bufferLength);
+//   analyser.getByteFrequencyData(dataArray);
+
+//   const sampleRate = audioContext.sampleRate;
+//   const dominantFrequency = getDominantFrequency(dataArray, sampleRate);
+
+//   console.log("Dominant Frequency:", dominantFrequency.toFixed(2), "Hz");
+
+//   const average = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
+//   const expansionFactor = average / 2.5;
+
+//   waveShadow1.style.width = 140 + expansionFactor + "px";
+//   waveShadow1.style.height = 140 + expansionFactor + "px";
+//   waveShadow2.style.width = 110 + expansionFactor + "px";
+//   waveShadow2.style.height = 110 + expansionFactor + "px";
+
+//   animationFrameId = requestAnimationFrame(animateWave);
+// }
+
+// function getDominantFrequency(dataArray, sampleRate) {
+//   let maxIndex = 0;
+//   let maxValue = 0;
+
+//   for (let i = 0; i < dataArray.length; i++) {
+//     if (dataArray[i] > maxValue) {
+//       maxValue = dataArray[i];
+//       maxIndex = i;
+//     }
+//   }
+
+//   const nyquist = sampleRate / 2;
+//   const binSize = nyquist / dataArray.length;
+//   return maxIndex * binSize;
+// }
+
+// function resetWaveAnimation() {
+//   waveShadow1.style.width = "140px";
+//   waveShadow1.style.height = "140px";
+//   waveShadow2.style.width = "110px";
+//   waveShadow2.style.height = "110px";
+
+// }

@@ -12,6 +12,7 @@
       referrerpolicy="no-referrer"
     />
     <script src="../../components/sider-bar.js" type="module"></script>
+    <script src="../../components/love-bubble.js" type="module"></script>
     <title>Call Interface | ShareAm</title>
     <link rel="stylesheet" href="./../common/control-bar.css" />
   </head>
@@ -145,8 +146,10 @@
             </div>
           </div>
 
-          <div class="interface-section-3" id="heart-container">
+          <div class="interface-section-3">
+            <!-- <video id="localVideo" autoplay muted></video> -->
             <video id="localVideo" autoplay muted></video>
+            <!-- <video id="myvideo" autoplay playsinline style="width: 100%; height: 90vh;"></video> -->
             <div id="wave-shadows">
               <div class="wave-shadow-1">
                 <div class="wave-shadow-2">
@@ -161,7 +164,11 @@
 
             <div class="action-btn-main-wrap">
               <ul class="action-btn-wrap">
-                <li class="action-btn">
+                <!-- Share screen -->
+                <li
+                  class="action-btn smallscreenhidden-btn"
+                  id="share-screen-btn"
+                >
                   <svg
                     width="22"
                     height="21"
@@ -331,6 +338,7 @@
                         />
                       </g>
                     </svg>
+
                     <svg
                       width="20"
                       height="21"
@@ -343,19 +351,8 @@
                         fill="#DAD9D9"
                       />
                     </svg>
-                    <svg
-                      width="18"
-                      height="16"
-                      viewBox="0 0 18 16"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M15.5219 1.06294C13.682 -0.557503 10.9457 -0.266031 9.2569 1.53485L8.59548 2.23924L7.93407 1.53485C6.24863 -0.266031 3.50895 -0.557503 1.66906 1.06294C-0.439414 2.92281 -0.55021 6.26086 1.33668 8.27687L7.83334 15.2097C8.25303 15.6574 8.93459 15.6574 9.35427 15.2097L15.8509 8.27687C17.7412 6.26086 17.6304 2.92281 15.5219 1.06294Z"
-                        fill="#DAD9D9"
-                        fill-opacity="0.9"
-                      />
-                    </svg>
+
+                    <love-bubble></love-bubble>
                   </span>
                 </li>
 
@@ -375,21 +372,7 @@
                 </li>
 
                 <li class="action-btn smallscreenhidden-btn">
-                  <svg
-                    width="24"
-                    height="22"
-                    viewBox="0 0 18 16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    id="trigger-heart"
-                  >
-                    <path
-                      d="M15.5219 1.06294C13.682 -0.557503 10.9457 -0.266031 9.2569 1.53485L8.59548 2.23924L7.93407 1.53485C6.24863 -0.266031 3.50895 -0.557503 1.66906 1.06294C-0.439414 2.92281 -0.55021 6.26086 1.33668 8.27687L7.83334 15.2097C8.25303 15.6574 8.93459 15.6574 9.35427 15.2097L15.8509 8.27687C17.7412 6.26086 17.6304 2.92281 15.5219 1.06294Z"
-                      fill="#DAD9D9"
-                      fill-opacity="0.9"
-                      id="path-color"
-                    />
-                  </svg>
+                  <love-bubble></love-bubble>
                 </li>
               </ul>
             </div>
@@ -924,7 +907,8 @@
                 </button>
               </form>
             </div>
-
+            <!-- to display the shared acreen -->
+            <!-- <video id="myvideo" autoplay playsinline style="width: 100%; height: 90vh;"></video> -->
             <div id="participant-section" class="tab-content">
               <div class="participant-wrapper"></div>
             </div>

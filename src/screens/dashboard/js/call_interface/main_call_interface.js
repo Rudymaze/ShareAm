@@ -37,6 +37,49 @@ const waveline4 = document.querySelector(".span-4");
 const waveline5 = document.querySelector(".span-5");
 const waveline6 = document.querySelector(".span-6");
 const waves = document.querySelector(".caller-photo");
+const localVideo = document.getElementById("localVideo");
+const waveShadow = document.getElementById("wave-shadows");
+
+// let isSharing = false;
+
+const startScreenSharing = async () => {
+  if (localVideo.srcObject === null) {
+    try {
+      const sources = await window.shareScreen.getSources();
+      const screenSource = sources.find(
+        (source) => source.name === "Entire screen"
+      );
+
+      if (screenSource) {
+        waveShadow.style.display = "none";
+        const stream = await navigator.mediaDevices.getUserMedia({
+          // audio: {
+          //   mandatory: {
+          //     chromeMediaSourceId: screenSource.id,
+          //     chromeMediaSource: "desktop",
+          //   }
+          // },
+          video: {
+            mandatory: {
+              chromeMediaSource: "desktop",
+              chromeMediaSourceId: screenSource.id,
+              maxFrameRate: 60,
+            },
+          },
+        });
+        localVideo.srcObject = stream;
+      }
+    } catch (error) {
+      console.error("Error starting screen sharing:", error);
+    }
+  } else {
+    localVideo.srcObject = null;
+  }
+};
+
+document
+  .getElementById("share-screen-btn")
+  .addEventListener("click", startScreenSharing);
 
 const getTotalParticipants = () => {
   totalParticipants.textContent = participants.length;
@@ -563,6 +606,12 @@ const handleEndCall = () => {
 backNav.addEventListener("click", handleEndCall);
 
 // ---------- ACTIVATION OF CAMERA AND MIC ---------- //
+const activateCameraIcon = document.getElementById("camera-icon");
+const toggleMicButton = document.getElementById("live-mic");
+const activeMicIcon = document.getElementById("active-mic-icon");
+// const localVideo = document.getElementById("localVideo");
+// const waveShadow = document.getElementById("wave-shadows");
+
 let localStream;
 let micEnabled = false; // Microphone state
 let cameraEnabled = false; // Camera state
@@ -612,7 +661,7 @@ activateCameraIcon.addEventListener("click", async () => {
               </svg>`;
     }
   } catch (error) {
-    statuss.textContent = "Error accessing media devices.";
+    // statuss.textContent = "Error accessing media devices.";
     console.error("Error toggling camera:", error);
   }
 });
@@ -785,13 +834,3 @@ triggerHeart.addEventListener("click", function () {
     heartCopy.remove();
   });
 });
-
-// const copyToClipboard = async (textToCopy) => {
-//   let copyState;
-//   try {
-//     await navigator.clipboard.writeText(textToCopy);
-//     copyState = true;
-//   } catch (err) {
-//     copyState = false;
-//   }
-// };

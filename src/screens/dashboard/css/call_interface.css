@@ -261,6 +261,7 @@ ul {
 .interface-section-3 {
   height: 68vh;
   border-radius: 11px;
+  overflow: hidden;
   position: relative;
   display: flex;
   align-items: center;

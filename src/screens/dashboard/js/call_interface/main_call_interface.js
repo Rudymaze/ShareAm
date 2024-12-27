@@ -23,6 +23,7 @@ const backNav = document.getElementById("back-nav");
 const sidebarContainer = document.getElementById("sidebar-container");
 const addUser = document.querySelector(".add-user");
 const localVideo = document.getElementById("localVideo");
+const waveShadow = document.getElementById("wave-shadows");
 
 // let isSharing = false;
 
@@ -35,6 +36,7 @@ const startScreenSharing = async () => {
       );
 
       if (screenSource) {
+        waveShadow.style.display = "none";
         const stream = await navigator.mediaDevices.getUserMedia({
           // audio: {
           //   mandatory: {
@@ -594,7 +596,7 @@ const activateCameraIcon = document.getElementById("camera-icon");
 const toggleMicButton = document.getElementById("live-mic");
 const activeMicIcon = document.getElementById("active-mic-icon");
 // const localVideo = document.getElementById("localVideo");
-const waveShadow = document.getElementById("wave-shadows");
+// const waveShadow = document.getElementById("wave-shadows");
 
 let localStream;
 let micEnabled = true; // Microphone state
@@ -717,18 +719,12 @@ triggerHeart.addEventListener("click", function () {
   const containerWidth = heartContainer.offsetWidth;
   const containerHeight = heartContainer.offsetHeight;
 
-  const startX = Math.random() * containerWidth + 5;
-  const startY = containerHeight - 150;
+  const startX = Math.random() * containerWidth;
+  const startY = containerHeight;
 
-  heartCopy.style.left = `${startX}px`;
-  heartCopy.style.top = `${startY}px`;
-
-  const randomX = Math.random() * 100 - 50;
-  const randomY = Math.random() * -200 - 100;
-  const randomScale = Math.random() * 0.5 + 0.5;
-
-  heartCopy.style.animation = `bubble-up 2s ease-out forwards`;
-  heartCopy.style.transform = `translate(${randomX}px, ${randomY}px) scale(${randomScale})`;
+  heartCopy.style.right = `${Math.round(startX) + 10}%`;
+  heartCopy.style.left = `${Math.round(startX) + 80}%`;
+  heartCopy.style.top = `${startY - 130}%`;
 
   heartContainer.appendChild(heartCopy);
 

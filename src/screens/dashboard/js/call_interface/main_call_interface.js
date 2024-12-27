@@ -700,35 +700,6 @@ toggleMicButton.addEventListener("click", () => {
   }
 });
 
-//-----------------Heart Emoji Bubble------------------//
 
-const triggerHeart = document.getElementById("trigger-heart");
-const heartContainer = document.getElementById("heart-container");
-const pathColor = document.getElementById("path-color");
 
-triggerHeart.addEventListener("click", function () {
-  pathColor.setAttribute("fill", "red");
 
-  setTimeout(() => {
-    pathColor.setAttribute("fill", "#DAD9D9");
-  }, 2000);
-
-  const heartCopy = triggerHeart.cloneNode(true);
-  heartCopy.classList.add("heart-copy");
-
-  const containerWidth = heartContainer.offsetWidth;
-  const containerHeight = heartContainer.offsetHeight;
-
-  const startX = Math.random() * containerWidth;
-  const startY = containerHeight;
-
-  heartCopy.style.right = `${Math.round(startX) + 10}%`;
-  heartCopy.style.left = `${Math.round(startX) + 80}%`;
-  heartCopy.style.top = `${startY - 130}%`;
-
-  heartContainer.appendChild(heartCopy);
-
-  heartCopy.addEventListener("animationend", () => {
-    heartCopy.remove();
-  });
-});

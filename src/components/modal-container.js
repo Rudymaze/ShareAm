@@ -47,7 +47,6 @@ template.innerHTML = `
 
     </style>
 
-
     <div class="modal-container">
         <div class="modal">
             <div class="times-icon" onclick="{handleClosemodal}"><FaTimes /></div>
@@ -59,17 +58,13 @@ template.innerHTML = `
     
     
 `;
-
-
-
 class ModalContainer extends HTMLElement {
-  constructor() {
-    super();
-    const shadowRoot = this.attachShadow({ mode: "open" });
-    let clone = template.content.cloneNode(true);
-    shadowRoot.append(clone);
-  }
+    constructor() {
+        super();
+        const shadowRoot = this.attachShadow({ mode: "open" });
+        let clone = template.content.cloneNode(true);
+        shadowRoot.append(clone);
+    }
 
 }
 customElements.define("modal-container", ModalContainer);
-

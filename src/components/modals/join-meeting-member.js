@@ -29,12 +29,18 @@ template.innerHTML = `
         user-select: none;
         font-family: poppins-regular;
       }
-      .join-meeting-container {
+      .join-meeting-container-wrapper {
         display: flex;
         flex-direction: column;
         display: flex;
         align-items: center;
         gap: 4vh;
+        padding: 2vw 2vh;
+      }
+
+      .join-meeting-container {
+        display: flex;
+        gap: 2vw;
       }
 
       .user-actions-container {
@@ -45,6 +51,21 @@ template.innerHTML = `
         gap: 1vh;
         width: 40vw;
         height: 60vh;
+      }
+
+      .user-input-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 2vh;
+        justify-content: center;
+      }
+
+      .user-input-wrap label {
+        display: block;
+        font-weight: 700;
+        font-family: poppins-bold;
+        font-size: 12px;
+        color: #fffcfc;
       }
 
       .user-cam {
@@ -76,7 +97,7 @@ template.innerHTML = `
         border-radius: 18px;
         cursor: pointer;
       }
-      .name-code-input {
+      .name-input {
         border: none;
         display: flex;
         align-items: center;
@@ -88,13 +109,15 @@ template.innerHTML = `
 
       .btn-login {
         background-color: #1376e3;
-        padding: 1.5vh 10vw;
+        padding: 1.5vh 0vw;
+        width: 30vw;
         border-radius: 10px;
         border: none;
         color: white;
         font-weight: bold;
         font-size: 1vw;
         cursor: pointer;
+        margin-top: 5vh;
       }
       
       .btn-login:hover {
@@ -108,14 +131,34 @@ template.innerHTML = `
         font-weight: 600;
       }
 
+      @media (prefers-color-scheme: light) {
+            .join-meeting-container-wrapper {
+                background-color: #dad9d9;
+            }
+            .name-input {
+              background-color: #979797;
+              color: #000000;
+            }
+        }   
+        @media (prefers-color-scheme: dark) {
+            .join-meeting-container-wrapper {
+                background-color: #2a282d;
+            }
+            .name-input {
+              background-color: #e4e4e4;
+              color: #000000;
+            }
+        }   
     </style>
 
+    <div class="join-meeting-container-wrapper">
     <div class="join-meeting-container">
       <div class="user-actions-container">
         <img
-            class="user-cam" 
-            src="../../assets/images/Moderator Screen.png"
-            alt="" />
+          class="user-cam" 
+          src="../../assets/images/Moderator Screen.png"
+          alt="" 
+        />
         <div class="user-actions">
           <div id="mic-wrap">
             <svg
@@ -196,8 +239,22 @@ template.innerHTML = `
           </div>
         </div>
       </div>
-      <input type="text" class="name-code-input" />
-      <button class="btn-login blue-btn-txt" type="submit">Join</button>
+      <form class="user-input-wrap">        
+        <label for="name-input">Name:</label>
+        <input 
+          type="text" 
+          class="name-input"
+          id="name-input"
+          required
+        />
+        <button 
+          class="btn-login blue-btn-txt" 
+          type="submit"
+        >
+          Join
+        </button>
+      </form>
+      </div>
     </div>
 
    
@@ -209,6 +266,23 @@ class JoinMeetingMember extends HTMLElement {
     const shadowRoot = this.attachShadow({ mode: "closed" });
     let clone = template.content.cloneNode(true);
     shadowRoot.append(clone);
+  }
+
+  connectedCallback() {
+    const meetingForm = this.shadowRoot.getElementById("meetingForm");
+    
+    meetingForm.addEventListener("submit", this.handleSubmit);
+  }
+
+  gotoCallInterface = async() => {
+    window.location.href = "/src/screens/dashboard/call_interface.html";
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    const nameInput = document.getElementById("name-input").value;
+    localStorage.setItem("memberName", nameInput);
+    this.gotoCallInterface();
   }
 }
 

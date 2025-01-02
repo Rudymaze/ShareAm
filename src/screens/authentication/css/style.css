@@ -55,6 +55,11 @@ html {
   background: #14042c;
 }
 
+#member-container,
+#host-container {
+  display: none;
+}
+
 @media (prefers-color-scheme: dark) {
   .container {
     display: flex;

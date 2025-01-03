@@ -239,30 +239,25 @@
       const memberContainer = document.getElementById("member-container");
       const hostContainer = document.getElementById("host-container");
       const startMeetingBtn = document.getElementById("start-meeting-btn");
-      async function gotoCallInterface() {
-        window.location.href = "../dashboard/call_interface.html";
-      }
 
       async function gotohome() {
         window.location.href = "../dashboard/dashboard.html";
       }
 
       document
-        .getElementById("meetingForm")
-        .addEventListener("submit", function (event) {
-          event.preventDefault();
-          const meetingId = document.getElementById("meeting_id").value;
-          localStorage.setItem("meetingToken", meetingId);
-          // gotoCallInterface();
-          memberContainer.style.display = "block";
-        });
+      .getElementById("meetingForm")
+      .addEventListener("submit", function (event) {
+        event.preventDefault();
+        const meetingId = document.getElementById("meeting_id").value;
+        localStorage.setItem("meetingToken", meetingId);
+        memberContainer.style.display = "block";
+      });
         
-        
-        const handleHost = () => {
-          hostContainer.style.display = "block";
-        }
-        
-        startMeetingBtn.addEventListener("click", handleHost);
+      const handleHost = () => {
+        hostContainer.style.display = "block";
+      }
+      
+      startMeetingBtn.addEventListener("click", handleHost);
     </script>
     <script src="../../renderer.js"></script>
   </body>

@@ -11,6 +11,15 @@
     <link rel="stylesheet" href="./css/style.css" />
     <link rel="stylesheet" href="./../common/control-bar.css" />
     <script src="../../components/authButtons.js"></script>
+    <script
+      src="../../components/modals/join-meeting-member.js"
+      type="module"
+    ></script>
+    <script
+      src="../../components/modals/join-meeting-host.js"
+      type="module"
+    ></script>
+    <script src="../../components/modal-container.js" type="module"></script>
   </head>
 
   <body>
@@ -185,7 +194,7 @@
       <div class="content">
         <div class="auth">
           <h2>Video calls for everyone</h2>
-          <button class="btn-login" onclick="gotohome()" type="submit">
+          <button class="btn-login" id="start-meeting-btn" type="button">
             Start a Meeting
           </button>
           <!-- <auth-buttons onclick="gotohome()">
@@ -220,23 +229,35 @@
         <div></div>
       </div>
     </div>
+    <modal-container id="member-container">
+      <join-meeting-member slot="content"></join-meeting-member>
+    </modal-container>
+    <modal-container id="host-container">
+      <join-meeting-host slot="content"></join-meeting-host>
+    </modal-container>
     <script>
-      async function gotoCallInterface() {
-        window.location.href = "../dashboard/call_interface.html";
-      }
+      const memberContainer = document.getElementById("member-container");
+      const hostContainer = document.getElementById("host-container");
+      const startMeetingBtn = document.getElementById("start-meeting-btn");
 
       async function gotohome() {
         window.location.href = "../dashboard/dashboard.html";
       }
 
       document
-        .getElementById("meetingForm")
-        .addEventListener("submit", function (event) {
-          event.preventDefault();
-          const meetingId = document.getElementById("meeting_id").value;
-          localStorage.setItem("meetingToken", meetingId);
-          gotoCallInterface();
-        });
+      .getElementById("meetingForm")
+      .addEventListener("submit", function (event) {
+        event.preventDefault();
+        const meetingId = document.getElementById("meeting_id").value;
+        localStorage.setItem("meetingToken", meetingId);
+        memberContainer.style.display = "block";
+      });
+        
+      const handleHost = () => {
+        hostContainer.style.display = "block";
+      }
+      
+      startMeetingBtn.addEventListener("click", handleHost);
     </script>
     <script src="../../renderer.js"></script>
   </body>

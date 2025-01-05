@@ -18,6 +18,7 @@
     <script src="../modal/js/main.modal.js" type="module"></script>
     <script src="../../components/modals/join-meeting-member.js" type="module"></script>
     <script src="../../components/modals/join-meeting-host.js" type="module"></script>
+    <script src="../../components/modal-container.js" type="module"></script>
     <title>Modals</title>
   </head>
   <body>
@@ -29,6 +30,7 @@
       <all-set></all-set>
       <join-meeting-member></join-meeting-member>
       <join-meeting-host></join-meeting-host>
+      
 
       <div class="call-rate">
         <p class="rate-text">Rate this call</p>
@@ -167,5 +169,11 @@
         <a href="../../screens/dashboard/dashboard.html">Home</a>
       </div>
     </main>
+    <modal-container>
+      <!-- <div slot="content">
+      User, your password reset was successful
+      </div> -->
+      <join-meeting-host slot="content"></join-meeting-host>
+    </modal-container>
   </body>
 </html>

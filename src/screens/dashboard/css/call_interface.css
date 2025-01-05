@@ -263,9 +263,25 @@ ul {
   border-radius: 11px;
   overflow: hidden;
   position: relative;
-  display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.first-interface-section-3-div {
+  z-index: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.second-interface-section-3-div {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 85% 15%;
 }
 
 #localVideo {
@@ -275,42 +291,53 @@ ul {
   object-fit: cover;
 }
 
-#wave-shadows {
-  position: absolute;
+.shadow-users-display-wrapper {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  justify-content: space-between;
+  padding: 0 2vw;
+  position: relative;
+}
+
+.empty-div {
+  width: 4.5vw;
+}
+
+.mic-animation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .wave-shadow-1 {
-  height: 140px;
-  width: 140px;
+  height: 100px;
+  width: 100px;
   border-radius: 100%;
+  border: 15px solid #585858;
   box-shadow: 0px 0px 15px 7px inset #585858;
+  margin: auto;
+  opacity: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: width 0.2s ease, height 0.2s ease;
-}
-
-.wave-shadow-2 {
-  height: 110px;
-  width: 110px;
-  border-radius: 100%;
-  box-shadow: 0px 0px 15px 7px inset #585858;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: width 0.2s ease, height 0.2s ease;
+  transition: height 0.2s, width 0.2s, border 0.2s, box-shadow 0.2s;
 }
 
 .caller-photo {
   background-color: #585858;
-  height: 80px;
-  width: 80px;
+  height: 100px;
+  width: 100px;
   border-radius: 100%;
+  overflow: hidden;
+  z-index: 1;
+  position: absolute;
+  top: 37.8%;
+  left: 43.8%;
 }
 
 .caller-photo img {
-  height: 80px;
-  width: 80px;
+  height: 100%;
+  width: 100%;
   border-radius: 100%;
   object-fit: cover;
   object-position: 50% 50%;
@@ -321,9 +348,7 @@ ul {
   display: flex;
   flex-direction: column;
   gap: 3.5vh;
-  position: absolute;
-  top: 5%;
-  right: 4%;
+  padding-top: 3vh;
 }
 
 .call-participants {
@@ -362,9 +387,7 @@ ul {
 }
 
 .action-btn-main-wrap {
-  width: 100%;
-  position: absolute;
-  bottom: 7%;
+  grid-column: 1/3;
 }
 
 .action-btn-wrap {

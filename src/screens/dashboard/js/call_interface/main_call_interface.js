@@ -29,15 +29,8 @@ const toggleMicButton = document.getElementById("live-mic");
 const activeMicIcon = document.getElementById("active-mic-icon");
 const localVideo = document.getElementById("localVideo");
 const waveShadow = document.getElementById("wave-shadows");
+const wavePhoto = document.querySelector(".caller-photo");
 const waveShadow1 = document.querySelector(".wave-shadow-1");
-const waveShadow2 = document.querySelector(".wave-shadow-2");
-const waveline1 = document.querySelector(".span-1");
-const waveline2 = document.querySelector(".span-2");
-const waveline3 = document.querySelector(".span-3");
-const waveline4 = document.querySelector(".span-4");
-const waveline5 = document.querySelector(".span-5");
-const waveline6 = document.querySelector(".span-6");
-const waves = document.querySelector(".caller-photo");
 const lineWave = document.querySelectorAll(".line-wave");
 
 // let isSharing = false;
@@ -52,13 +45,8 @@ const startScreenSharing = async () => {
 
       if (screenSource) {
         waveShadow.style.display = "none";
+        wavePhoto.style.display = "none";
         const stream = await navigator.mediaDevices.getUserMedia({
-          // audio: {
-          //   mandatory: {
-          //     chromeMediaSourceId: screenSource.id,
-          //     chromeMediaSource: "desktop",
-          //   }
-          // },
           video: {
             mandatory: {
               chromeMediaSource: "desktop",
@@ -94,29 +82,32 @@ const handleAddUserPopup = () => {
     addUserList.innerHTML = `
                   <div>
                       <span class="prof-pic">
-                       ${item.image
-        ? `
+                       ${
+                         item.image
+                           ? `
                             <img
                                 src="${item.image}"
                                 alt="User Profile Pic"
                             />
                             `
-        : `
+                           : `
                             <div class="user-profile-pic-placeholder">NU</div>`
-      } 
+                       } 
                       </div>
                       </span>
                       <p class="username-txt">${item.name}</p>
                       <span class="online-status-vidoe-icon">
                       <div class="online-stat">
-                        <p class="online-status-mode" style="background-color: ${item.status === "active" ? "#3cea43" : "orange"
-      }">
+                        <p class="online-status-mode" style="background-color: ${
+                          item.status === "active" ? "#3cea43" : "orange"
+                        }">
                         </p>
                         <p class="online-status-text">${item.statusText}</p>
                       </div>
                       <div class="video-icon">
-                      ${item.videoIcon
-        ? `<svg
+                      ${
+                        item.videoIcon
+                          ? `<svg
                           width="32"
                           height="31"
                           viewBox="0 0 25 24"
@@ -132,7 +123,7 @@ const handleAddUserPopup = () => {
                             fill="#388E3C"
                           />
                         </svg>`
-        : `<svg
+                          : `<svg
                           width="35"
                           height="24"
                           viewBox="0 0 25 24"
@@ -144,7 +135,7 @@ const handleAddUserPopup = () => {
                             fill="#E4E4E4"
                           />
                         </svg>`
-      }
+                      }
                       </div>
                       </span>
                     </div>
@@ -192,21 +183,23 @@ const handleChatBubble = () => {
       receivedChat.innerHTML = `
                 <div class="user-message-box">
                   <div class="profile-pic">
-                      ${item.received.image
-          ? `
+                      ${
+                        item.received.image
+                          ? `
                             <img
                               src="${item.received.image}"
                               alt="User Profile Pic"
                             />
                           `
-          : `
+                          : `
                         <div class="user-profile-pic-placeholder">NU</div>`
-        } 
+                      } 
                   </div>
-                      <p class="userName">${item.received.name
-          ? `<p class="desktop-msg-subtitle-txt">${item.received.name}</p>`
-          : `<p class="desktop-msg-subtitle-txt">${item.received.username}</p>`
-        }</p>
+                      <p class="userName">${
+                        item.received.name
+                          ? `<p class="desktop-msg-subtitle-txt">${item.received.name}</p>`
+                          : `<p class="desktop-msg-subtitle-txt">${item.received.username}</p>`
+                      }</p>
                 </div>
 
                 <div class="text-and-time-wrapper">
@@ -233,26 +226,29 @@ const handleEachParticiantsList = () => {
                   <li class="each-participant">
                     <div class="participant-profile-wrapper">
                       <div class="participant-profile-picture">
-                       ${item.image
-        ? `
+                       ${
+                         item.image
+                           ? `
                             <img
                                 src="${item.image}"
                                 alt="User Profile Pic"
                             />
                             `
-        : `
+                           : `
                             <div class="user-profile-pic-placeholder">NU</div>`
-      } 
+                       } 
                       </div>
                         <span
-                          class="online-status" style="background-color: ${item.status === "active" ? "#3cea43" : "orange"
-      }">
+                          class="online-status" style="background-color: ${
+                            item.status === "active" ? "#3cea43" : "orange"
+                          }">
                         </span>
                     </div>
                     <p class="participant-txt">${item.name}</p>
                     <span class="participant-microphone">
-                     ${item.microphone
-        ? `<div class="mic-on"> 
+                     ${
+                       item.microphone
+                         ? `<div class="mic-on"> 
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 height="14"
@@ -267,7 +263,7 @@ const handleEachParticiantsList = () => {
                               </svg>
                             </div>
                           `
-        : `<div class="mic-off"> 
+                         : `<div class="mic-off"> 
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 height="14"
@@ -282,7 +278,7 @@ const handleEachParticiantsList = () => {
                               </svg>
                             </div>
                           `
-      } 
+                     } 
                     </span>
                     <span class="ellipsis-menu">
                         <svg
@@ -331,18 +327,20 @@ const handleParticipantsOnScreenDisplay = () => {
     listenerDisplay.innerHTML = `
           <div class="user-img call-participants listener-display">
             
-              ${item.image
-        ? `
+              ${
+                item.image
+                  ? `
                               <img
                                   src="${item.image}"
                                   alt="User Profile Pic"
                               />
                               `
-        : `
+                  : `
                               <div class="user-img-display">NU</div>`
-      }
-            ${item.speaking
-        ? `
+              }
+            ${
+              item.speaking
+                ? `
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   version="1.1"
@@ -377,7 +375,7 @@ const handleParticipantsOnScreenDisplay = () => {
                     ></path>
                   </g>
                 </svg>`
-        : `<svg
+                : `<svg
                   xmlns="http://www.w3.org/2000/svg"
                   version="1.1"
                   xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -411,7 +409,7 @@ const handleParticipantsOnScreenDisplay = () => {
                     </g>
                   </g>
                 </svg>`
-      }
+            }
             
           </div>
     `;
@@ -607,16 +605,12 @@ const handleCopyMeetingLink = () => {
 
 copyMeetingLink.addEventListener("click", handleCopyMeetingLink);
 
-
 // ---------- ACTIVATION OF CAMERA AND MIC ---------- //
 let localStream;
-let micEnabled = false; // Microphone state
-let cameraEnabled = false; // Camera state
+let micEnabled = false;
+let cameraEnabled = false;
 let audioContext;
 let analyser;
-let microphoneStream;
-let gainNode;
-let animationFrameId;
 let microphone;
 
 // Toggle camera
@@ -629,6 +623,7 @@ activateCameraIcon.addEventListener("click", async () => {
       localVideo.srcObject = localStream;
       cameraEnabled = true;
       waveShadow.style.display = "none";
+      wavePhoto.style.display = "none";
       activateCameraIcon.innerHTML = `<svg
                     width="24"
                     height="19"
@@ -649,6 +644,7 @@ activateCameraIcon.addEventListener("click", async () => {
       localVideo.srcObject = null;
       cameraEnabled = false;
       waveShadow.style.display = "block";
+      wavePhoto.style.display = "block";
       activateCameraIcon.innerHTML = `<svg
                   xmlns="http://www.w3.org/2000/svg"  width="24"
                   height="19" fill="#acacac" viewBox="0 0 640 512">
@@ -672,6 +668,7 @@ async function initAudioProcessing() {
     microphone.connect(analyser);
 
     visualizeAudio();
+    visualizeWaveshadow();
   } catch (err) {
     console.error("Error initializing audio processing:", err);
   }
@@ -689,26 +686,36 @@ function visualizeAudio() {
     const maxVolume = Math.max(...dataArray);
 
     if (maxVolume > 50) {
-      waveShadow.style.display = "block";
-      console.log("Sound detected:", maxVolume);
-
       let lineHeight = maxVolume / 2.55;
 
       lineWave.forEach((span, index) => {
         let variation = Math.random() * 20 - 10;
         span.style.height = `${lineHeight + variation}%`;
-        console.log(`Span ${index} height set to: ${span.style.height}`);
-        console.log(lineHeight);
       });
 
-      console.log(lineWave);
-    } else {
-      console.log("No sound detected");
-      waveShadow.style.display = "none";
+      const shadowSize = maxVolume / 2.55;
 
+      // Dynamically update styles
+      waveShadow1.style.height = `${100 + shadowSize}px`;
+      waveShadow1.style.width = `${100 + shadowSize}px`;
+
+      const borderWidth = Math.max(5, 20 - shadowSize / 10);
+      waveShadow1.style.border = `${borderWidth}px solid rgb(${Math.floor(
+        shadowSize * 2
+      )}, 0, 255)`;
+
+      waveShadow1.style.boxShadow = `0px 0px 15px 7px inset rgb(${Math.floor(
+        shadowSize * 2
+      )}, 0, 255)`;
+    } else {
       lineWave.forEach((span) => {
         span.style.height = "20%";
       });
+
+      waveShadow1.style.height = "100px";
+      waveShadow1.style.width = "100px";
+      waveShadow1.style.border = "15px solid #585858";
+      waveShadow1.style.boxShadow = "0px 0px 15px 7px inset #585858";
     }
 
     requestAnimationFrame(update);
@@ -717,7 +724,7 @@ function visualizeAudio() {
   update();
 }
 
-// Toggle microphone with visualization control
+//Toggle microphone with visualization control
 toggleMicButton.addEventListener("click", async () => {
   localStream = await navigator.mediaDevices.getUserMedia({
     audio: true,
@@ -776,94 +783,17 @@ toggleMicButton.addEventListener("click", async () => {
       }
       isVisualizing = true;
       visualizeAudio();
+      visualizeWaveshadow();
     } else {
       isVisualizing = false;
-      waveShadow.style.display = "none";
       lineWave.forEach((span) => {
         span.style.height = "20%";
       });
+
+      waveShadow1.style.height = "100px";
+      waveShadow1.style.width = "100px";
+      waveShadow1.style.border = "15px solid #585858";
+      waveShadow1.style.boxShadow = "0px 0px 15px 7px inset #585858";
     }
   }
 });
-
-// async function startMicrophone() {
-//   try {
-
-//     const stream = await navigator.mediaDevices.getUserMedia({
-//       audio: true,
-//     });
-//     microphoneStream = stream;
-
-//     audioContext = new (window.AudioContext || window.webkitAudioContext)();
-//     analyser = audioContext.createAnalyser();
-//     gainNode = audioContext.createGain();
-//     analyser.fftSize = 256;
-//     analyser.smoothingTimeConstant = 0.8;
-
-//     const microphoneSource = audioContext.createMediaStreamSource(stream);
-//     microphoneSource.connect(analyser);
-//     analyser.connect(gainNode);
-//     gainNode.connect(audioContext.destination);
-
-//     animateWave();
-//   } catch (err) {
-//     console.error("Error accessing microphone", err);
-//   }
-// }
-
-// function stopMicrophone() {
-//   if (microphoneStream) {
-//     const tracks = microphoneStream.getTracks();
-//     tracks.forEach((track) => track.stop());
-//   }
-//   if (audioContext) {
-//     audioContext.close();
-//   }
-//   cancelAnimationFrame(animationFrameId);
-//   resetWaveAnimation();
-// }
-
-// function animateWave() {
-//   const bufferLength = analyser.frequencyBinCount;
-//   const dataArray = new Uint8Array(bufferLength);
-//   analyser.getByteFrequencyData(dataArray);
-
-//   const sampleRate = audioContext.sampleRate;
-//   const dominantFrequency = getDominantFrequency(dataArray, sampleRate);
-
-//   console.log("Dominant Frequency:", dominantFrequency.toFixed(2), "Hz");
-
-//   const average = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
-//   const expansionFactor = average / 2.5;
-
-//   waveShadow1.style.width = 140 + expansionFactor + "px";
-//   waveShadow1.style.height = 140 + expansionFactor + "px";
-//   waveShadow2.style.width = 110 + expansionFactor + "px";
-//   waveShadow2.style.height = 110 + expansionFactor + "px";
-
-//   animationFrameId = requestAnimationFrame(animateWave);
-// }
-
-// function getDominantFrequency(dataArray, sampleRate) {
-//   let maxIndex = 0;
-//   let maxValue = 0;
-
-//   for (let i = 0; i < dataArray.length; i++) {
-//     if (dataArray[i] > maxValue) {
-//       maxValue = dataArray[i];
-//       maxIndex = i;
-//     }
-//   }
-
-//   const nyquist = sampleRate / 2;
-//   const binSize = nyquist / dataArray.length;
-//   return maxIndex * binSize;
-// }
-
-// function resetWaveAnimation() {
-//   waveShadow1.style.width = "140px";
-//   waveShadow1.style.height = "140px";
-//   waveShadow2.style.width = "110px";
-//   waveShadow2.style.height = "110px";
-
-// }

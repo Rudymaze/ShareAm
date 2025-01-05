@@ -534,6 +534,24 @@ template.innerHTML = `
                More
               </div>
             </a>
+            
+            <a class="menu-link nav-texts" href="../authentication/join_meeting.html">
+              <div class="icon-span">
+                  <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="21"
+                      height="20"
+                      viewBox="0 0 512 512"
+                      class="icon"
+                      >
+                      <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z" fill="currentColor"/>
+                  </svg>
+              </div>
+              <div class="menu-text">
+               Log out
+              </div>
+            </a>
+
           </div>
 
           <div class="section4-share-am-div">
@@ -574,12 +592,16 @@ class SideBar extends HTMLElement {
     const hamburger = this.shadowRoot.getElementById("hamburger-icon");
     this.menuText = this.shadowRoot.querySelectorAll(".menu-text");
 
-
     if (hamburger) {
-      hamburger.addEventListener('click', this.toggleState); document.addEventListener('DOMContentLoaded', this.initialState.bind(this));
+      hamburger.addEventListener("click", this.toggleState);
+      document.addEventListener(
+        "DOMContentLoaded",
+        this.initialState.bind(this)
+      );
       this.initialState();
-    } else { console.error('Element not found: hamburger-icon'); }
-
+    } else {
+      console.error("Element not found: hamburger-icon");
+    }
 
     switch (this.active) {
       case "dashboard":
@@ -617,11 +639,22 @@ class SideBar extends HTMLElement {
     }
   }
 
-  attributeChangedCallback() { this.updateMenuTextVisibility(); }
-  initialState = () => { const currentState = window.showState.getState(this.key); this.updateMenuTextVisibility(currentState); }
-  toggleState = () => { const newState = window.showState.toggle(); this.updateMenuTextVisibility(newState); }
-  updateMenuTextVisibility(state) { this.menuText.forEach((span) => { span.classList.toggle("display-text", state); }); }
-
+  attributeChangedCallback() {
+    this.updateMenuTextVisibility();
+  }
+  initialState = () => {
+    const currentState = window.showState.getState(this.key);
+    this.updateMenuTextVisibility(currentState);
+  };
+  toggleState = () => {
+    const newState = window.showState.toggle();
+    this.updateMenuTextVisibility(newState);
+  };
+  updateMenuTextVisibility(state) {
+    this.menuText.forEach((span) => {
+      span.classList.toggle("display-text", state);
+    });
+  }
 }
 
 customElements.define("side-bar", SideBar);

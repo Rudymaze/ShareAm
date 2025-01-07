@@ -318,12 +318,6 @@ ul {
   justify-content: center;
 }
 
-/* #mic-animation {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-} */
-
 .wave-shadow-1 {
   height: 100px;
   width: 100px;
@@ -954,6 +948,7 @@ ul {
   align-items: center;
   gap: 1vw;
   cursor: pointer;
+  position: relative;
 }
 
 .participant-profile-picture {
@@ -1007,13 +1002,14 @@ ul {
 
 .menu-list {
   background-color: #585858;
-  width: 8vw;
+  width: fit-content;
   padding: 1.1vh 1vw;
   border-radius: 11px;
   position: absolute;
-  top: 100%;
-  left: 5%;
-  z-index: 1000;
+  top: 95%;
+  right: 6%;
+  z-index: 1;
+  display: none;
 }
 
 .menu-list li {
@@ -1024,7 +1020,7 @@ ul {
   display: none;
 }
 
-.menu-display {
+.menu-open {
   display: block;
 }
 
@@ -1116,7 +1112,7 @@ ul {
 .menu-txt {
   color: #dad9d9;
   font-family: Poppins-regular;
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 /*------Toggle Switch Key---------------*/
 

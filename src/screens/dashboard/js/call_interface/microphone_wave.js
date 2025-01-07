@@ -1,6 +1,3 @@
-// import { waveShadow } from "./general_call_interface_variable";
-// import { wavePhoto } from "./general_call_interface_variable";
-
 const toggleMicButton = document.getElementById("live-mic");
 const activeMicIcon = document.getElementById("active-mic-icon");
 const waveShadow1 = document.querySelector(".wave-shadow-1");

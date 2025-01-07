@@ -1,14 +1,15 @@
-const toggleMicButton = document.getElementById("live-mic");
-const activeMicIcon = document.getElementById("active-mic-icon");
+// import { waveShadow } from "./general_call_interface_variable";
+// import { wavePhoto } from "./general_call_interface_variable";
 const waveShadow = document.getElementById("wave-shadows");
 const wavePhoto = document.querySelector(".caller-photo");
+const toggleMicButton = document.getElementById("live-mic");
+const activeMicIcon = document.getElementById("active-mic-icon");
 const waveShadow1 = document.querySelector(".wave-shadow-1");
 const lineWave = document.querySelectorAll(".line-wave");
 
-// ---------- ACTIVATION OF CAMERA AND MIC ---------- //
+// ---------- ACTIVATION MIC ---------- //
 let localStream;
 let micEnabled = false;
-let cameraEnabled = false;
 let audioContext;
 let analyser;
 let microphone;

@@ -721,10 +721,6 @@ ul {
   background: rgba(48, 48, 48, 0.75);
 }
 
-.user-text {
-  word-break: break-all;
-}
-
 .user-typing-indicator {
   display: flex;
   align-items: center;

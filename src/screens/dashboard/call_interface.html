@@ -150,20 +150,25 @@
 
           <div class="interface-section-3">
             <div class="first-interface-section-3-div">
-              <video id="localVideo" autoplay muted></video>
+              <video id="camera-video" autoplay muted></video>
+              <video id="share-screen-video" autoplay muted></video>
             </div>
 
             <div class="second-interface-section-3-div">
               <div class="shadow-users-display-wrapper">
                 <div class="empty-div"></div>
-                <span class="mic-animation">
-                  <div id="wave-shadows">
-                    <span class="wave-shadow-1"></span>
+                <div class="animation-wrapper">
+                  <div id="animation-wave">
+                    <div class="wave-shadow-1 center-photo-container">
+                      <div class="center-photo">
+                        <img
+                          src="../../assets/images/call-wallpaper.png"
+                          alt=""
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div class="caller-photo">
-                    <img src="../../assets/images/call-wallpaper.png" alt="" />
-                  </div>
-                </span>
+                </div>
                 <ul id="users-display"></ul>
               </div>
               <div class="action-btn-main-wrap">
@@ -924,5 +929,16 @@
       src="js/call_interface/main_call_interface.js"
       type="module"
     ></script>
+    <script
+      src="js/call_interface/general_call_interface_variable.js"
+      type="module"
+    ></script>
+    <script src="js/call_interface/microphone_wave.js" type="module"></script>
+    <script
+      src="js/call_interface/camera-screen-sharing.js"
+      type="module"
+    ></script>
+    <script src="js/call_interface/message_tab.js" type="module"></script>
+    <script src="js/call_interface/participant_tab.js" type="module"></script>
   </body>
 </html>

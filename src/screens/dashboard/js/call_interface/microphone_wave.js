@@ -1,7 +1,6 @@
 // import { waveShadow } from "./general_call_interface_variable";
 // import { wavePhoto } from "./general_call_interface_variable";
-const waveShadow = document.getElementById("wave-shadows");
-const wavePhoto = document.querySelector(".caller-photo");
+
 const toggleMicButton = document.getElementById("live-mic");
 const activeMicIcon = document.getElementById("active-mic-icon");
 const waveShadow1 = document.querySelector(".wave-shadow-1");
@@ -72,8 +71,6 @@ function visualizeAudio() {
 
       waveShadow1.style.height = "100px";
       waveShadow1.style.width = "100px";
-      waveShadow1.style.border = "15px solid #585858";
-      waveShadow1.style.boxShadow = "0px 0px 15px 7px inset #585858";
     }
 
     requestAnimationFrame(update);
@@ -150,8 +147,6 @@ toggleMicButton.addEventListener("click", async () => {
 
       waveShadow1.style.height = "100px";
       waveShadow1.style.width = "100px";
-      waveShadow1.style.border = "15px solid #585858";
-      waveShadow1.style.boxShadow = "0px 0px 15px 7px inset #585858";
     }
   }
 });

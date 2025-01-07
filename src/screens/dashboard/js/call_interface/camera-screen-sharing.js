@@ -1,13 +1,51 @@
-// import { waveShadow } from "./general_call_interface_variable";
-// import { wavePhoto } from "./general_call_interface_variable";
-const waveShadow = document.getElementById("wave-shadows");
-const wavePhoto = document.querySelector(".caller-photo");
 const activateCameraIcon = document.getElementById("camera-icon");
-const localVideo = document.getElementById("localVideo");
+const cameraVideo = document.getElementById("camera-video");
+const shareScreenVideo = document.getElementById("share-screen-video");
+const animationWave = document.getElementById("animation-wave");
 
-// ---------- ACTIVATION OF CAMERA AND MIC ---------- //
+// ---------- ACTIVATION OF CAMERA AND SHARING OF SCREEN ---------- //
 let localStream;
 let cameraEnabled = false;
+let isShareScreen;
+
+const startScreenSharing = async () => {
+  if (shareScreenVideo.srcObject === null) {
+    try {
+      const sources = await window.shareScreen.getSources();
+      const screenSource = sources.find(
+        (source) => source.name === "Entire screen"
+      );
+
+      if (screenSource) {
+        cameraVideo.style.display = "none";
+
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            mandatory: {
+              chromeMediaSource: "desktop",
+              chromeMediaSourceId: screenSource.id,
+              maxFrameRate: 60,
+            },
+          },
+        });
+        shareScreenVideo.srcObject = stream;
+        isShareScreen = true;
+        handleWavePhoto();
+      }
+    } catch (error) {
+      console.error("Error starting screen sharing:", error);
+    }
+  } else {
+    shareScreenVideo.srcObject = null;
+    cameraVideo.style.display = "block";
+    isShareScreen = false;
+    handleWavePhoto();
+  }
+};
+
+document
+  .getElementById("share-screen-btn")
+  .addEventListener("click", startScreenSharing);
 
 // Toggle camera
 activateCameraIcon.addEventListener("click", async () => {
@@ -16,10 +54,9 @@ activateCameraIcon.addEventListener("click", async () => {
       localStream = await navigator.mediaDevices.getUserMedia({
         video: true,
       });
-      localVideo.srcObject = localStream;
+      cameraVideo.srcObject = localStream;
       cameraEnabled = true;
-      waveShadow.style.display = "none";
-      wavePhoto.style.display = "none";
+      handleWavePhoto();
       activateCameraIcon.innerHTML = `<svg
                     width="24"
                     height="19"
@@ -37,10 +74,9 @@ activateCameraIcon.addEventListener("click", async () => {
         const videoTrack = localStream.getVideoTracks()[0];
         if (videoTrack) videoTrack.stop();
       }
-      localVideo.srcObject = null;
+      cameraVideo.srcObject = null;
       cameraEnabled = false;
-      waveShadow.style.display = "block";
-      wavePhoto.style.display = "block";
+      handleWavePhoto();
       activateCameraIcon.innerHTML = `<svg
                   xmlns="http://www.w3.org/2000/svg"  width="24"
                   height="19" fill="#acacac" viewBox="0 0 640 512">
@@ -51,3 +87,11 @@ activateCameraIcon.addEventListener("click", async () => {
     console.error("Error toggling camera:", error);
   }
 });
+
+const handleWavePhoto = () => {
+  if (cameraEnabled || isShareScreen) {
+    animationWave.style.display = "none";
+  } else {
+    animationWave.style.display = "block";
+  }
+};

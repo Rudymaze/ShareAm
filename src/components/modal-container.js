@@ -5,6 +5,7 @@ template.innerHTML = `
             display: flex;
             gap: 10px;
         }
+
         .modal-container {
             display: flex;
             justify-content: center;
@@ -25,6 +26,7 @@ template.innerHTML = `
             cursor: pointer;
             color: red;
         }
+
         .modal {
             background-color: #ffffff;
             margin: auto;
@@ -44,27 +46,47 @@ template.innerHTML = `
               background-color: rgba(31,32,31, 0.5);
             }
         }   
-
     </style>
 
-    <div class="modal-container">
+    <div class="modal-container" id="modal-container">
         <div class="modal">
-            <div class="times-icon" onclick="{handleClosemodal}"><FaTimes /></div>
+            <div class="times-icon" id="close-icon"><FaTimes /></div>
             <div class="modal-details">
                 <slot name="content"></slot>
             </div>
         </div>
     </div>
-    
-    
 `;
+
 class ModalContainer extends HTMLElement {
     constructor() {
         super();
         const shadowRoot = this.attachShadow({ mode: "open" });
-        let clone = template.content.cloneNode(true);
-        shadowRoot.append(clone);
+        shadowRoot.append(template.content.cloneNode(true));
+        document.addEventListener('DOMContentLoaded', () => {
+            this.close();
+        });
     }
 
+    connectedCallback() {
+        this.shadowRoot.getElementById('modal-container').addEventListener('click', (e) => {
+            if (e.target === this.shadowRoot.getElementById('modal-container')) {
+                this.close();
+            }
+        });
+
+        this.shadowRoot.getElementById('close-icon').addEventListener('click', () => {
+            this.close();
+        });
+    }
+
+    open() {
+        this.style.display = 'block';
+    }
+
+    close() {
+        this.style.display = 'none';
+    }
 }
+
 customElements.define("modal-container", ModalContainer);

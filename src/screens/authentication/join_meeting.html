@@ -20,6 +20,7 @@
       type="module"
     ></script>
     <script src="../../components/modal-container.js" type="module"></script>
+    <script src="../../components/modals/rate-call-modal.js" type="module"></script>
   </head>
 
   <body>
@@ -229,35 +230,74 @@
         <div></div>
       </div>
     </div>
-    <modal-container id="member-container">
-      <join-meeting-member slot="content"></join-meeting-member>
-    </modal-container>
+
     <modal-container id="host-container">
-      <join-meeting-host slot="content"></join-meeting-host>
+      <join-meeting-host id="join-meeting-host" slot="content"></join-meeting-host>
     </modal-container>
+
+    <modal-container id="member-container">
+      <join-meeting-member id="join-meeting-member" slot="content"></join-meeting-member>
+    </modal-container>
+
+    <!-- <modal-container id="rate-call-container">
+      <rate-call id="rate-call" slot="content"></rate-call>
+    </modal-container> -->
+
     <script>
       const memberContainer = document.getElementById("member-container");
       const hostContainer = document.getElementById("host-container");
+      // const rateCallContainer = document.getElementById("rate-call-container");
       const startMeetingBtn = document.getElementById("start-meeting-btn");
+      const joinMeetingHost = document.getElementById("join-meeting-host");
+      const joinMeetingMember = document.getElementById("join-meeting-member");
+      const form = document.getElementById("meetingForm");
+      
+      const openModal = (modal) => {
+        modal.open();
+      };
 
-      async function gotohome() {
-        window.location.href = "../dashboard/dashboard.html";
-      }
+      const closeModal = (modal) => {
+        modal.close();
+      };
 
-      document
-      .getElementById("meetingForm")
-      .addEventListener("submit", function (event) {
+      const joinMeeting = () => {
         event.preventDefault();
         const meetingId = document.getElementById("meeting_id").value;
         localStorage.setItem("meetingToken", meetingId);
-        memberContainer.style.display = "block";
-      });
-        
-      const handleHost = () => {
-        hostContainer.style.display = "block";
+        openModal(memberContainer);
       }
-      
-      startMeetingBtn.addEventListener("click", handleHost);
+      form.addEventListener("submit", joinMeeting);
+
+      startMeetingBtn.addEventListener("click", () => openModal(hostContainer));
+
+      // Ensure the event listener for the end call button is attached after the component is defined
+      customElements.whenDefined('join-meeting-host').then(() => {
+        const hostEndCallButton = joinMeetingHost.shadowRoot.querySelector("#end-call-wrap");
+        if (hostEndCallButton) {
+          hostEndCallButton.addEventListener("click", () => closeModal(hostContainer));
+        } else {
+          console.error("Host end call button not found");
+        }
+      });
+
+      customElements.whenDefined('join-meeting-member').then(() => {
+        const memberEndCallButton = joinMeetingMember.shadowRoot.querySelector("#end-call-wrap");
+        if (memberEndCallButton) {
+          memberEndCallButton.addEventListener("click", () => closeModal(memberContainer));
+        } else {
+          console.error("Member end call button not found");
+        }
+      });
+
+      // const handleShowRateCallModal = () => {
+      //   const meetingToken = localStorage.getItem("meetingToken");
+      //   if (meetingToken) {
+      //     openModal(rateCallContainer);
+      //     localStorage.removeItem("meetingToken");
+      //   }
+      // };
+      // handleShowRateCallModal()
+
     </script>
     <script src="../../renderer.js"></script>
   </body>

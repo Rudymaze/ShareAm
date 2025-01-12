@@ -11,11 +11,14 @@ const attachListWrapper = document.getElementById("attach-list-wrapper");
 const AddUserPopup = document.getElementById("add-user-popup");
 const addUserIcon = document.getElementById("add-icon");
 const eachUserWrapper = document.getElementById("each-user-wrapper");
-const backNav = document.getElementById("back-nav");
 const sidebarContainer = document.getElementById("sidebar-container");
 const addUser = document.querySelector(".add-user");
 const copyMeetingLink = document.querySelector(".copy-meeting-link");
 const copyMeetingLinkTxt = document.querySelector(".copy-meeting-link-txt");
+const callBtn = document.getElementById("call-btn");
+// const rateCallContainer = document.getElementById("rate-call-container");
+
+
 
 // ------- ADD USER POPUP -------- //
 const handleAddUserPopup = () => {
@@ -25,32 +28,29 @@ const handleAddUserPopup = () => {
     addUserList.innerHTML = `
                   <div>
                       <span class="prof-pic">
-                       ${
-                         item.image
-                           ? `
+                       ${item.image
+        ? `
                             <img
                                 src="${item.image}"
                                 alt="User Profile Pic"
                             />
                             `
-                           : `
+        : `
                             <div class="user-profile-pic-placeholder">NU</div>`
-                       } 
+      } 
                       </div>
                       </span>
                       <p class="username-txt">${item.name}</p>
                       <span class="online-status-vidoe-icon">
                       <div class="online-stat">
-                        <p class="online-status-mode" style="background-color: ${
-                          item.status === "active" ? "#3cea43" : "orange"
-                        }">
+                        <p class="online-status-mode" style="background-color: ${item.status === "active" ? "#3cea43" : "orange"
+      }">
                         </p>
                         <p class="online-status-text">${item.statusText}</p>
                       </div>
                       <div class="video-icon">
-                      ${
-                        item.videoIcon
-                          ? `<svg
+                      ${item.videoIcon
+        ? `<svg
                           width="32"
                           height="31"
                           viewBox="0 0 25 24"
@@ -66,7 +66,7 @@ const handleAddUserPopup = () => {
                             fill="#388E3C"
                           />
                         </svg>`
-                          : `<svg
+        : `<svg
                           width="35"
                           height="24"
                           viewBox="0 0 25 24"
@@ -78,7 +78,7 @@ const handleAddUserPopup = () => {
                             fill="#E4E4E4"
                           />
                         </svg>`
-                      }
+      }
                       </div>
                       </span>
                     </div>
@@ -137,6 +137,19 @@ const handleTab = () => {
 };
 handleTab();
 
+
+// ---------- COPY MEETING LINK ---------- //
+const handleCopyMeetingLink = () => {
+  const meetingToken = localStorage.getItem("meetingToken");
+  navigator.clipboard.writeText(meetingToken);
+  copyMeetingLinkTxt.textContent = "Meeting link copied";
+  setTimeout(() => {
+    copyMeetingLinkTxt.textContent = "Copy meeting link";
+  }, 1000);
+};
+copyMeetingLink.addEventListener("click", handleCopyMeetingLink);
+
+
 // -------- EMOJI OVERLAY ----------- //
 
 emojiOverlay.addEventListener("click", (event) => {
@@ -169,7 +182,6 @@ const displayAttachOverlay = () => {
     attachListWrapper.classList.add("display-attach-list");
   }
 };
-
 inputAttachments.addEventListener("click", displayAttachOverlay);
 
 const handleMeetingState = () => {
@@ -177,36 +189,57 @@ const handleMeetingState = () => {
 
   if (meetingToken) {
     sidebarContainer.style.display = "none";
-    backNav.style.display = "block";
     addUser.style.display = "none";
   } else {
     sidebarContainer.style.display = "block";
-    backNav.style.display = "none";
     copyMeetingLink.style.display = "none";
   }
 };
-
 handleMeetingState();
 
 async function gotojoinmeeting() {
   window.location.href = "../authentication/join_meeting.html";
 }
 
-const handleEndCall = () => {
-  localStorage.removeItem("meetingToken");
+const closeModal = (modal) => {
+  modal.close();
   gotojoinmeeting();
 };
 
-backNav.addEventListener("click", handleEndCall);
-
-// ---------- COPY MEETING LINK ---------- //
-const handleCopyMeetingLink = () => {
-  const meetingToken = localStorage.getItem("meetingToken");
-  navigator.clipboard.writeText(meetingToken);
-  copyMeetingLinkTxt.textContent = "Meeting link copied";
-  setTimeout(() => {
-    copyMeetingLinkTxt.textContent = "Copy meeting link";
-  }, 1000);
+const openModal = (modal) => {
+  modal.open();
 };
 
-copyMeetingLink.addEventListener("click", handleCopyMeetingLink);
+const handleEndCall = () => {
+  const meetingToken = localStorage.getItem("meetingToken");
+
+  if (meetingToken) {
+    gotojoinmeeting();
+    localStorage.removeItem("meetingToken");
+  }
+  // openModal(rateCallContainer);
+};
+callBtn.addEventListener("click", handleEndCall);
+
+// const handleCallRating = () => {
+//   const meetingToken = localStorage.getItem("meetingToken");
+//   if (meetingToken) {
+//     gotojoinmeeting();
+//     // localStorage.removeItem("meetingToken");
+//   }
+//   // closeModal(rateCallContainer)
+// }
+
+
+// Ensure the event listener for the end call button is attached after the component is defined
+// customElements.whenDefined('rate-call').then(() => {
+//   const done = rateCall.shadowRoot.getElementById("done-btn");
+//   if (done) {
+//     done.addEventListener("click", handleCallRating);
+//   } else {
+//     console.error("Done button not found");
+//   }
+// });
+
+
+

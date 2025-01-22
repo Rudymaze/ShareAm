@@ -26,12 +26,8 @@ html {
   font-family: Rubik;
   src: url(../../../assets/fonts/Rubik-VariableFont_wght.ttf);
 }
-/* DO NOT REMOVE THE CODE ABOVE */
 
-/* .body {
-  height: 100vh;
-  overflow: hidden;
-} */
+/* DO NOT REMOVE THE CODE ABOVE */
 
 .message {
   display: flex;
@@ -129,43 +125,25 @@ main {
 }
 
 .left-side-div2-top {
-  display: inline-flex;
+  display: flex;
   gap: 0.5vw;
   padding-left: 0.5vw;
   margin-bottom: 1.5vh;
 }
 
-.left-side-div2-top a {
-  text-decoration: none;
+.chat-tab-content {
+  display: none;
 }
 
-.all-btn,
-.followers-btn,
-.fans-btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.chat-tab-content.active {
+  display: block;
+}
+
+.chat-tab{
   border-radius: 60px;
-  color: #545454;
-  font-size: 1rem;
-  font-weight: 400;
   border: none;
-}
-
-.all-btn {
   padding: 0.8vh 1vw;
-  background: #c7c7f9;
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.15));
-}
 
-.followers-btn {
-  padding: 0.8vh 1vw;
-  background: #f1f1f1;
-}
-
-.fans-btn {
-  padding: 0.8vh 1vw;
-  background: #f1f1f1;
 }
 
 .chat-wrapper {
@@ -253,10 +231,6 @@ main {
   display: flex;
   align-items: center;
   gap: 2px;
-}
-
-.active-dark {
-  background: #494848;
 }
 
 .inactive {
@@ -516,16 +490,12 @@ main {
 .message-text {
   color: #979797;
   font-family: Poppins-medium;
-  /* width: 150px; */
+  
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* .light-disappear-text {
-  color: #686868;
-  font-family: Poppins-regular;
-} */
 
 #placeholder {
   display: none;
@@ -552,6 +522,13 @@ main {
   .select-all-txt {
     color: #0490ec;
   }
+
+  .chat-tab.active {
+    background: #6f3fe3;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.15));
+  }
+
+
 
   .user-div:hover {
     background: #c7c7f9;
@@ -618,6 +595,11 @@ main {
 
   .select-all-txt {
     color: #150aa1;
+  }
+
+  .chat-tab.active {
+    background: #c7c7f9;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.15));
   }
 
   .user-div:hover {
@@ -688,18 +670,6 @@ main {
   html {
     font-size: 15px;
   }
-
-  /* .user-details-div1 {
-    height: 39px;
-    width: 35px;
-    border-radius: 100%;
-  } */
-
-  /* .user-details-div1 img {
-    height: 39px;
-    width: 35px;
-    border-radius: 100%;
-  } */
 
   #chats-container {
     /* display: none; */

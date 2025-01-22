@@ -64,21 +64,27 @@
 
             <div class="left-side-div2">
               <div class="left-side-div2-top">
-                <a href="" class="all-btn follower-btn-text">All</a>
-                <a href="" class="followers-btn follower-btn-text">Followers</a>
-                <a href="" class="fans-btn follower-btn-text">Fans</a>
+                <button class="chat-tab active">All</button>
+                <button class="chat-tab">Followers</button>
+                <button class="chat-tab">Fans</button>
               </div>
               <!-- <hr /> -->
-              
+
               <div class="chat-wrapper">
-                <div id="chat-list">
+                <div id="chat-list" class="chat-tab-content active">
+                  <!-- inset here -->
+                </div>
+                <div id="Followers-list" class="chat-tab-content">
+                  <!-- inset here -->
+                </div>
+                <div id="Following-list" class="chat-tab-content">
                   <!-- inset here -->
                 </div>
               </div>
             </div>
           </div>
 
-           <div id="chat-content">
+          <div id="chat-content">
             <div class="chat-header">
               <div class="right-side-div1">
                 <svg
@@ -109,10 +115,14 @@
                     src="../../assets/images/Screenshot (173) 1 (1).svg"
                     alt="User Profile Pic"
                   />
-                  <div class="user-profile-pic-placeholder" id="placeholder">NU</div>
+                  <div class="user-profile-pic-placeholder" id="placeholder">
+                    NU
+                  </div>
                 </div>
                 <div>
-                  <p class="friends-display-name-text" id="active-username">Mason Mount</p>
+                  <p class="friends-display-name-text" id="active-username">
+                    Mason Mount
+                  </p>
                   <p class="disappear-text">
                     Sent you a
                     <span id="blue-text">Dissapearing Message</span>
@@ -125,53 +135,6 @@
             </div>
             <div class="chats-box-wrapper">
               <div id="chats-box"></div>
-              <!-- <div id="chats-box">
-                <div class="sender-message">
-                  <p>Send the image</p>
-                  <div class="time-tick-wrapper">
-                    <p class="user-text-delivery-time desktop-sent-date-txt">
-                      12:07pm
-                    </p>
-                    <img src="../../assets/icons/double-tick.svg" alt="" />
-                  </div>
-                </div>
-                <div class="receiver-message">
-                  <img src="../../assets/images/ONANANANA 1.svg" alt="" />
-                  <p class="user-text-delivery-time desktop-sent-date-txt">
-                    12:07pm
-                  </p>
-                </div>
-                <div class="sender-message">
-                  <p>Send the image</p>
-                  <div class="time-tick-wrapper">
-                    <p class="user-text-delivery-time desktop-sent-date-txt">
-                      12:07pm
-                    </p>
-                    <img src="../../assets/icons/double-tick.svg" alt="" />
-                  </div>
-                </div>
-                <div class="receiver-message">
-                  <p>rekfjrjfbgik gnkbhgfbnbhglgb tkbgjlsntbg tgnklgbnbj hnfgkldtbhl ntgbhdtgb tfbtfnntn</p>
-                  <p class="user-text-delivery-time desktop-sent-date-txt">
-                    12:07pm
-                  </p>
-                </div>
-                <div class="sender-message">
-                  <p>Send the image</p>
-                  <div class="time-tick-wrapper">
-                    <p class="user-text-delivery-time desktop-sent-date-txt">
-                      12:07pm
-                    </p>
-                    <img src="../../assets/icons/double-tick.svg" alt="" />
-                  </div>
-                </div>
-                <div class="receiver-message">
-                  <img src="../../assets/images/ONANANANA 1.svg" alt="" />
-                  <p class="user-text-delivery-time desktop-sent-date-txt">
-                    12:07pm
-                  </p>
-                </div>
-              </div> -->
             </div>
             <div class="right-side-div3-wrapper">
               <div class="disappearing-message-warning-text">
@@ -267,8 +230,8 @@
           </div>
 
           <div id="welcome-sec">
-            <img id="logo" src="../../assets/images/logo.png" alt="logo">
-            <h1>Share <span>Am</span> </h1>
+            <img id="logo" src="../../assets/images/logo.png" alt="logo" />
+            <h1>Share <span>Am</span></h1>
             <p class="tagline">Seamless Conversations, Anytime, Anywhere.</p>
           </div>
         </div>

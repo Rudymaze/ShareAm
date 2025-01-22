@@ -11,6 +11,9 @@ const activeUsermsg = document.getElementById("blue-text");
 const activeUserDate = document.getElementById("active-userdate");
 const placeHolder = document.getElementById("placeholder");
 const chatBox = document.getElementById("chats-box");
+const chatTab = document.querySelectorAll(".chat-tab");
+const chatTabContent = document.querySelectorAll(".chat-tab-content");
+
 
 let clicked = false;
 
@@ -128,6 +131,26 @@ const renderChatList = () => {
   });
 }
 renderChatList()
+
+//-------- MESSAGE AND PARTICIPANT TOGGLE --------//
+const handleChatListTab = () => {
+  chatTab.forEach((tab, index) => {
+    tab.addEventListener("click", (e) => {
+      chatTab.forEach((tab) => {
+        tab.classList.remove("active");
+      });
+      tab.classList.add("active");
+
+      chatTabContent.forEach((content) => {
+        content.classList.remove("active");
+      });
+      chatTabContent[index].classList.add("active");
+    });
+  });
+};
+handleChatListTab();
+
+
 
 const renderChatMessages = () => {
   messageSample.forEach((chat) => {

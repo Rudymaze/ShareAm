@@ -26,12 +26,8 @@ html {
   font-family: Rubik;
   src: url(../../../assets/fonts/Rubik-VariableFont_wght.ttf);
 }
-/* DO NOT REMOVE THE CODE ABOVE */
 
-/* .body {
-  height: 100vh;
-  overflow: hidden;
-} */
+/* DO NOT REMOVE THE CODE ABOVE */
 
 .message {
   display: flex;
@@ -135,26 +131,6 @@ main {
   margin-bottom: 1.5vh;
 }
 
-
-/* .all-btn, */
-/* .followers-btn, */
-/* .fans-btn { */
-  /* display: flex; */
-  /* justify-content: center; */
-  /* align-items: center; */
-  /* border-radius: 60px; */
-  /* color: #545454; */
-  /* font-size: 1rem; */
-  /* font-weight: 400; */
-  /* border: none; */
-/* } */
-
-/* .all-btn { */
-  /* padding: 0.8vh 1vw; */
-  /* background: #c7c7f9; */
-  /* filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.15)); */
-/* } */
-
 .chat-tab-content {
   display: none;
 }
@@ -162,15 +138,6 @@ main {
 .chat-tab-content.active {
   display: block;
 }
-/* .followers-btn { */
-  /* padding: 0.8vh 1vw; */
-  /* background: #f1f1f1; */
-/* } */
-
-/* .fans-btn { */
-  /* padding: 0.8vh 1vw; */
-  /* background: #f1f1f1; */
-/* } */
 
 .chat-tab{
   border-radius: 60px;

@@ -173,7 +173,7 @@ const displayAttachOverlay = () => {
 inputAttachments.addEventListener("click", displayAttachOverlay);
 
 const handleMeetingState = () => {
-  const meetingToken = localStorage.getItem("meetingToken");
+  const meetingToken = sessionStorage.getItem("meetingToken");
 
   if (meetingToken) {
     sidebarContainer.style.display = "none";
@@ -193,7 +193,7 @@ async function gotojoinmeeting() {
 }
 
 const handleEndCall = () => {
-  localStorage.removeItem("meetingToken");
+  sessionStorage.removeItem("meetingToken");
   gotojoinmeeting();
 };
 
@@ -201,7 +201,7 @@ backNav.addEventListener("click", handleEndCall);
 
 // ---------- COPY MEETING LINK ---------- //
 const handleCopyMeetingLink = () => {
-  const meetingToken = localStorage.getItem("meetingToken");
+  const meetingToken = sessionStorage.getItem("meetingToken");
   navigator.clipboard.writeText(meetingToken);
   copyMeetingLinkTxt.textContent = "Meeting link copied";
   setTimeout(() => {

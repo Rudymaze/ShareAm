@@ -298,8 +298,8 @@ class JoinMeetingHost extends HTMLElement {
     const meetingForm = this.shadowRootRef.getElementById("meeting-form");
     const toogleVideoButton = this.shadowRootRef.getElementById("video-wrap");
     const toggleMicButton = this.shadowRootRef.getElementById("mic-wrap");
-    localStorage.setItem("cameraState", this.cameraEnabled);
-    localStorage.setItem("micState", this.micEnabled);
+    sessionStorage.setItem("cameraState", this.cameraEnabled);
+    sessionStorage.setItem("micState", this.micEnabled);
 
     if (toogleVideoButton) {
       toogleVideoButton.addEventListener("click", this.handleActivateCamera);
@@ -323,9 +323,12 @@ class JoinMeetingHost extends HTMLElement {
   handleActivateCamera = async () => {
     try {
       const localVideo = this.shadowRootRef.getElementById("localVideo");
-      const activateCameraIcon = this.shadowRootRef.getElementById("video-wrap");
+      const activateCameraIcon =
+        this.shadowRootRef.getElementById("video-wrap");
       if (!this.cameraEnabled) {
-        this.localStream = await navigator.mediaDevices.getUserMedia({ video: true });
+        this.localStream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+        });
         localVideo.srcObject = this.localStream;
         localVideo.style.transform = "scaleX(-1)";
         this.cameraEnabled = true;
@@ -341,7 +344,7 @@ class JoinMeetingHost extends HTMLElement {
             fill="#DAD9D9"
           />
         </svg>`;
-        localStorage.setItem("cameraState", this.cameraEnabled);
+        sessionStorage.setItem("cameraState", this.cameraEnabled);
       } else {
         if (this.localStream) {
           const videoTrack = this.localStream.getVideoTracks()[0];
@@ -355,12 +358,12 @@ class JoinMeetingHost extends HTMLElement {
           height="19" fill="#acacac" viewBox="0 0 640 512">
           <path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7l-86.4-67.7 13.8 9.2c9.8 6.5 22.4 7.2 32.9 1.6s16.9-16.4 16.9-28.2l0-256c0-11.8-6.5-22.6-16.9-28.2s-23-5-32.9 1.6l-96 64L448 174.9l0 17.1 0 128 0 5.8-32-25.1L416 128c0-35.3-28.7-64-64-64L113.9 64 38.8 5.1zM407 416.7L32.3 121.5c-.2 2.1-.3 4.3-.3 6.5l0 256c0 35.3 28.7 64 64 64l256 0c23.4 0 43.9-12.6 55-31.3z"/>
         </svg>`;
-        localStorage.setItem("cameraState", this.cameraEnabled);
+        sessionStorage.setItem("cameraState", this.cameraEnabled);
       }
     } catch (error) {
       console.error("Error toggling camera:", error);
     }
-  }
+  };
 
   handleActivateMic = async () => {
     try {
@@ -384,7 +387,7 @@ class JoinMeetingHost extends HTMLElement {
                 fill="#DAD9D9"
                 />
             </svg>`;
-        localStorage.setItem("micState", this.micEnabled);
+        sessionStorage.setItem("micState", this.micEnabled);
       } else {
         this.micEnabled = false;
         activeMicIcon.innerHTML = `<svg
@@ -411,29 +414,30 @@ class JoinMeetingHost extends HTMLElement {
               </g>
             </g>
           </svg>`;
-        localStorage.setItem("micState", this.micEnabled);
+        sessionStorage.setItem("micState", this.micEnabled);
       }
     } catch (error) {
       console.error("Error toggling mic:", error);
     }
-  }
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
     const topicInput = this.shadowRootRef.getElementById("topic-input").value;
-    const hostNameInput = this.shadowRootRef.getElementById("host-name-input").value;
+    const hostNameInput =
+      this.shadowRootRef.getElementById("host-name-input").value;
     const formData = {
       topic: topicInput,
       hostName: hostNameInput,
     };
-    localStorage.setItem("meetingToken", formData.topic);
-    localStorage.setItem("formData", JSON.stringify(formData));
+    sessionStorage.setItem("meetingToken", formData.topic);
+    sessionStorage.setItem("formData", JSON.stringify(formData));
     this.gotoCallInterface();
-  }
+  };
 
   gotoCallInterface = async () => {
     window.location.href = "../../screens/dashboard/call_interface.html";
-  }
+  };
 }
 
 customElements.define("join-meeting-host", JoinMeetingHost);

@@ -245,18 +245,18 @@
       }
 
       document
-      .getElementById("meetingForm")
-      .addEventListener("submit", function (event) {
-        event.preventDefault();
-        const meetingId = document.getElementById("meeting_id").value;
-        localStorage.setItem("meetingToken", meetingId);
-        memberContainer.style.display = "block";
-      });
-        
+        .getElementById("meetingForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          const meetingId = document.getElementById("meeting_id").value;
+          sessionStorage.setItem("meetingToken", meetingId);
+          memberContainer.style.display = "block";
+        });
+
       const handleHost = () => {
         hostContainer.style.display = "block";
-      }
-      
+      };
+
       startMeetingBtn.addEventListener("click", handleHost);
     </script>
     <script src="../../renderer.js"></script>

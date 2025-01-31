@@ -262,14 +262,14 @@ template.innerHTML = `
         <input 
           type="text" 
           class="name-input"
-          id="topic-input"
+          id="host-name-input"
           required
         />
         <label for="meeting-input">Meeting title:</label>
         <input 
           type="text" 
           class="name-input"
-          id="host-name-input" 
+          id="topic-input"
           required
         />
         <button 

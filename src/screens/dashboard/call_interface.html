@@ -13,6 +13,8 @@
     />
     <script src="../../components/sider-bar.js" type="module"></script>
     <script src="../../components/love-bubble.js" type="module"></script>
+    <script src="../../components/modals/rate-call-modal.js" type="module"></script>
+    <script src="../../components/modal-container.js" type="module"></script>
     <title>Call Interface | ShareAm</title>
     <link rel="stylesheet" href="./../common/control-bar.css" />
   </head>
@@ -47,21 +49,6 @@
         <div class="call-interface-wrapper">
           <div class="interface-wrap-1">
             <div class="interface-section-1">
-              <button class="back-dir" id="back-nav">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="8"
-                  height="12"
-                  viewBox="0 0 8 12"
-                  fill="none"
-                >
-                  <path
-                    d="M0.265211 5.43405L4.91994 0.735949C5.24166 0.411227 5.76432 0.408803 6.0856 0.730543L6.86631 1.50405C7.19104 1.82577 7.19346 2.34843 6.87172 2.66971L3.57234 5.99983L6.90246 9.29921C7.22718 9.62094 7.22961 10.1436 6.90787 10.4649L6.13436 11.2456C5.81264 11.5703 5.28998 11.5727 4.9687 11.251L0.270601 6.59627C-0.0540885 6.28142 -0.0565122 5.75877 0.265211 5.43405Z"
-                    fill="#DAD9D9"
-                  />
-                </svg>
-              </button>
-
               <p class="interface-section-1-text desktop-msg-title-txt">
                 Design Critique - ShareAm App
               </p>
@@ -253,7 +240,7 @@
                     </svg>
                   </li>
 
-                  <li class="call-btn">
+                  <li class="call-btn" id="call-btn">
                     <svg
                       width="39"
                       height="18"
@@ -924,6 +911,11 @@
         </div>
       </aside>
     </main>
+
+    <modal-container id="rate-call-container">
+      <rate-call id="rate-call" slot="content"></rate-call>
+    </modal-container>
+
     <script src="../../renderer.js"></script>
     <script
       src="js/call_interface/main_call_interface.js"

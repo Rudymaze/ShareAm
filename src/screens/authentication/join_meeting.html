@@ -20,6 +20,10 @@
       type="module"
     ></script>
     <script src="../../components/modal-container.js" type="module"></script>
+    <script
+      src="../../components/modals/rate-call-modal.js"
+      type="module"
+    ></script>
   </head>
 
   <body>
@@ -229,15 +233,29 @@
         <div></div>
       </div>
     </div>
-    <modal-container id="member-container">
-      <join-meeting-member slot="content"></join-meeting-member>
-    </modal-container>
+
     <modal-container id="host-container">
-      <join-meeting-host slot="content"></join-meeting-host>
+      <join-meeting-host
+        id="join-meeting-host"
+        slot="content"
+      ></join-meeting-host>
     </modal-container>
+
+    <modal-container id="member-container">
+      <join-meeting-member
+        id="join-meeting-member"
+        slot="content"
+      ></join-meeting-member>
+    </modal-container>
+
+    <!-- <modal-container id="rate-call-container">
+      <rate-call id="rate-call" slot="content"></rate-call>
+    </modal-container> -->
+
     <script>
       const memberContainer = document.getElementById("member-container");
       const hostContainer = document.getElementById("host-container");
+      // const rateCallContainer = document.getElementById("rate-call-container");
       const startMeetingBtn = document.getElementById("start-meeting-btn");
 
       async function gotohome() {

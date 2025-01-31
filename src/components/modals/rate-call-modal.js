@@ -295,10 +295,75 @@ template.innerHTML = `
 class RateCall extends HTMLElement {
   constructor() {
     super();
-    const shadowRoot = this.attachShadow({ mode: "closed" });
+    const shadowRoot = this.attachShadow({ mode: "open" });
     let clone = template.content.cloneNode(true);
     shadowRoot.append(clone);
   }
+
+  connectedCallback() {
+    const doneButton = this.shadowRoot.getElementById("done-btn");
+
+    if (doneButton) {
+      doneButton.addEventListener("click", this.handleCallRating);
+    } else {
+      console.error("Done button not found");
+    }
+  }
+
+  handleCallRating = () => {
+    this.gotojoinmeeting();
+  };
+
+  gotojoinmeeting = async () => {
+    ipcRenderer.send("navigate-to-join-meeting");
+  };
 }
 
 customElements.define("rate-call", RateCall);
+
+// class RateCall extends HTMLElement {
+//   constructor() {
+//     super();
+//     const shadowRoot = this.attachShadow({ mode: "open" });
+//     let clone = template.content.cloneNode(true);
+//     shadowRoot.append(clone);
+//   }
+
+//   connectedCallback() {
+//     const doneButton = this.shadowRoot.getElementById("done-btn");
+
+//     if (doneButton) {
+//       doneButton.addEventListener("click", this.handleCallRating);
+//     } else {
+//       console.error("Done button not found");
+//     }
+//   }
+
+//   handleCallRating = () => {
+//     // const meetingToken = sessionStorage.getItem("meetingToken");
+// this.gotojoinmeeting();
+// // if (meetingToken) {
+// //   this.gotojoinmeeting();
+// //   // sessionStorage.removeItem("meetingToken");
+// // }
+//   }
+
+//   gotojoinmeeting = async () => {
+//     window.location.href = "../../screens/authentication/join_meeting.html";
+//   }
+// }
+
+// customElements.define("rate-call", RateCall);
+
+{
+  /* <div className="flex space-x-3 mt-2">
+{[1, 2, 3, 4, 5].map((num) => (
+  <button key={num} onClick={() => setRating(num)}>
+    <StarIcon
+      className="w-6 h-6"
+      fill={rating >= num ? "#fdb022" : "#000"}
+    />
+  </button>
+))}
+</div> */
+}

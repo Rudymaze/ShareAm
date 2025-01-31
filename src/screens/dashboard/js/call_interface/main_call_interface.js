@@ -11,11 +11,12 @@ const attachListWrapper = document.getElementById("attach-list-wrapper");
 const AddUserPopup = document.getElementById("add-user-popup");
 const addUserIcon = document.getElementById("add-icon");
 const eachUserWrapper = document.getElementById("each-user-wrapper");
-const backNav = document.getElementById("back-nav");
 const sidebarContainer = document.getElementById("sidebar-container");
 const addUser = document.querySelector(".add-user");
 const copyMeetingLink = document.querySelector(".copy-meeting-link");
 const copyMeetingLinkTxt = document.querySelector(".copy-meeting-link-txt");
+const callBtn = document.getElementById("call-btn");
+// const rateCallContainer = document.getElementById("rate-call-container");
 
 // ------- ADD USER POPUP -------- //
 const handleAddUserPopup = () => {
@@ -137,6 +138,17 @@ const handleTab = () => {
 };
 handleTab();
 
+// ---------- COPY MEETING LINK ---------- //
+const handleCopyMeetingLink = () => {
+  const meetingToken = sessionStorage.getItem("meetingToken");
+  navigator.clipboard.writeText(meetingToken);
+  copyMeetingLinkTxt.textContent = "Meeting link copied";
+  setTimeout(() => {
+    copyMeetingLinkTxt.textContent = "Copy meeting link";
+  }, 1000);
+};
+copyMeetingLink.addEventListener("click", handleCopyMeetingLink);
+
 // -------- EMOJI OVERLAY ----------- //
 
 emojiOverlay.addEventListener("click", (event) => {
@@ -169,7 +181,6 @@ const displayAttachOverlay = () => {
     attachListWrapper.classList.add("display-attach-list");
   }
 };
-
 inputAttachments.addEventListener("click", displayAttachOverlay);
 
 const handleMeetingState = () => {
@@ -177,36 +188,53 @@ const handleMeetingState = () => {
 
   if (meetingToken) {
     sidebarContainer.style.display = "none";
-    backNav.style.display = "block";
     addUser.style.display = "none";
   } else {
     sidebarContainer.style.display = "block";
-    backNav.style.display = "none";
     copyMeetingLink.style.display = "none";
   }
 };
-
 handleMeetingState();
 
 async function gotojoinmeeting() {
   window.location.href = "../authentication/join_meeting.html";
 }
 
-const handleEndCall = () => {
-  sessionStorage.removeItem("meetingToken");
+const closeModal = (modal) => {
+  modal.close();
   gotojoinmeeting();
 };
 
-backNav.addEventListener("click", handleEndCall);
-
-// ---------- COPY MEETING LINK ---------- //
-const handleCopyMeetingLink = () => {
-  const meetingToken = sessionStorage.getItem("meetingToken");
-  navigator.clipboard.writeText(meetingToken);
-  copyMeetingLinkTxt.textContent = "Meeting link copied";
-  setTimeout(() => {
-    copyMeetingLinkTxt.textContent = "Copy meeting link";
-  }, 1000);
+const openModal = (modal) => {
+  modal.open();
 };
 
-copyMeetingLink.addEventListener("click", handleCopyMeetingLink);
+const handleEndCall = () => {
+  const meetingToken = sessionStorage.getItem("meetingToken");
+
+  if (meetingToken) {
+    gotojoinmeeting();
+    sessionStorage.removeItem("meetingToken");
+  }
+  // openModal(rateCallContainer);
+};
+callBtn.addEventListener("click", handleEndCall);
+
+// const handleCallRating = () => {
+//   const meetingToken = sessionStorage.getItem("meetingToken");
+//   if (meetingToken) {
+//     gotojoinmeeting();
+//     // sessionStorage.removeItem("meetingToken");
+//   }
+//   // closeModal(rateCallContainer)
+// }
+
+// Ensure the event listener for the end call button is attached after the component is defined
+// customElements.whenDefined('rate-call').then(() => {
+//   const done = rateCall.shadowRoot.getElementById("done-btn");
+//   if (done) {
+//     done.addEventListener("click", handleCallRating);
+//   } else {
+//     console.error("Done button not found");
+//   }
+// });

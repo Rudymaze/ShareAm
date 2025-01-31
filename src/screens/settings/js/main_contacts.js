@@ -122,6 +122,7 @@ const renderFavouriteSection = () => {
 renderFavouriteSection();
 
 // -------- TAB TOGGLE --------- //
+const handleContactListTab = () => {
 tabs.forEach((tab, index) => {
   tab.addEventListener("click", (e) => {
     tabs.forEach((tab) => {
@@ -135,5 +136,5 @@ tabs.forEach((tab, index) => {
     tabsContents[index].classList.add("active");
   });
 });
-
-console.log("hello world");
+};
+handleContactListTab();

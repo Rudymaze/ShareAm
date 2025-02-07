@@ -24,6 +24,14 @@
       src="../../components/modals/rate-call-modal.js"
       type="module"
     ></script>
+    <script
+      src="../../components/modals/rate-call-modal.js"
+      type="module"
+    ></script>
+    <script
+      src="../../components/modals/join-meeting-video.js"
+      type="module"
+    ></script>
   </head>
 
   <body>
@@ -257,25 +265,61 @@
       const hostContainer = document.getElementById("host-container");
       // const rateCallContainer = document.getElementById("rate-call-container");
       const startMeetingBtn = document.getElementById("start-meeting-btn");
+      const joinMeetingHost = document.getElementById("join-meeting-host");
+      const joinMeetingMember = document.getElementById("join-meeting-member");
+      const form = document.getElementById("meetingForm");
 
-      async function gotohome() {
-        window.location.href = "../dashboard/dashboard.html";
-      }
-
-      document
-        .getElementById("meetingForm")
-        .addEventListener("submit", function (event) {
-          event.preventDefault();
-          const meetingId = document.getElementById("meeting_id").value;
-          sessionStorage.setItem("meetingToken", meetingId);
-          memberContainer.style.display = "block";
-        });
-
-      const handleHost = () => {
-        hostContainer.style.display = "block";
+      const openModal = (modal) => {
+        modal.open();
       };
 
-      startMeetingBtn.addEventListener("click", handleHost);
+      const closeModal = (modal) => {
+        modal.close();
+      };
+
+      const joinMeeting = () => {
+        event.preventDefault();
+        const meetingId = document.getElementById("meeting_id").value;
+        localStorage.setItem("meetingToken", meetingId);
+        openModal(memberContainer);
+      };
+      form.addEventListener("submit", joinMeeting);
+
+      startMeetingBtn.addEventListener("click", () => openModal(hostContainer));
+
+      // Ensure the event listener for the end call button is attached after the component is defined
+      customElements.whenDefined("join-meeting-host").then(() => {
+        const hostEndCallButton =
+          joinMeetingHost.shadowRoot.querySelector("#end-call-wrap");
+        if (hostEndCallButton) {
+          hostEndCallButton.addEventListener("click", () =>
+            closeModal(hostContainer)
+          );
+        } else {
+          console.error("Host end call button not found");
+        }
+      });
+
+      customElements.whenDefined("join-meeting-member").then(() => {
+        const memberEndCallButton =
+          joinMeetingMember.shadowRoot.querySelector("#end-call-wrap");
+        if (memberEndCallButton) {
+          memberEndCallButton.addEventListener("click", () =>
+            closeModal(memberContainer)
+          );
+        } else {
+          console.error("Member end call button not found");
+        }
+      });
+
+      // const handleShowRateCallModal = () => {
+      //   const meetingToken = localStorage.getItem("meetingToken");
+      //   if (meetingToken) {
+      //     openModal(rateCallContainer);
+      //     localStorage.removeItem("meetingToken");
+      //   }
+      // };
+      // handleShowRateCallModal()
     </script>
     <script src="../../renderer.js"></script>
   </body>

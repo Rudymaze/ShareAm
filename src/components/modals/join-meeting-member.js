@@ -43,24 +43,6 @@ template.innerHTML = `
       gap: 2vw;
     }
 
-    .user-actions-container {
-      display: flex;
-      flex-direction: column;
-      display: flex;
-      align-items: center;
-      gap: 1vh;
-      width: 40vw;
-      height: 60vh;
-      background-color: red;
-    }
-
-    #localVideo {
-      border-radius: 11px;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
     .user-input-wrap {
       display: flex;
       flex-direction: column;
@@ -74,43 +56,6 @@ template.innerHTML = `
       font-family: poppins-bold;
       font-size: 12px;
       color: #fffcfc;
-    }
-
-    .user-cam {
-      width: 100%;
-      height: 100%;
-    }
-
-    .user-actions {
-      display: flex;
-      align-items: center;
-      gap: 3vw;
-      margin-top: -15vh;
-    }
-
-    #mic-wrap {
-      background-color: #1a71ff;
-      padding: 2vh 1vw;
-      border-radius: 18px;
-      cursor: pointer;
-      border: none;
-    }
-
-    #end-call-wrap {
-      color: #fff;
-      background-color: #ff4949;
-      padding: 3vh 3vw;
-      border-radius: 18px;
-      cursor: pointer;
-      border: none;
-    }
-
-    #video-wrap {
-      background-color: #1a71ff;
-      padding: 2vh 1vw;
-      border-radius: 18px;
-      cursor: pointer;
-      border: none;
     }
 
     .name-input {
@@ -135,7 +80,7 @@ template.innerHTML = `
       cursor: pointer;
       margin-top: 5vh;
     }
-    
+
     .btn-login:hover {
       background-color: #1058e8;
     }
@@ -145,26 +90,6 @@ template.innerHTML = `
       font-family: Poppins-regular;
       font-size: 0.9rem;
       font-weight: 600;
-    }
-
-    .video-display {
-      width: 40vw;
-      height: 60vh;
-      position: relative;
-      border-radius: 18px;
-    }
-
-    .btns-wrapper {
-      height: 100px;
-      width: 100%;
-      position: absolute;
-      bottom: 0;
-    }
-
-    .call-btns {
-      display: flex;
-      justify-content: space-evenly;
-      margin-top: 1vh;
     }
 
     @media (prefers-color-scheme: light) {
@@ -178,9 +103,6 @@ template.innerHTML = `
         color: #000000;
       }
 
-      .video-display {
-        background: radial-gradient(circle at -65% -65%, #910bfa, #22074a);
-      }
     }   
       
     @media (prefers-color-scheme: dark) {
@@ -193,70 +115,12 @@ template.innerHTML = `
         background-color: #e4e4e4;
         color: #000000;
       }
-      
-      .video-display {
-        background-color: #1f201f;
-      }
     }   
   </style>
 
   <div class="join-meeting-container-wrapper">
     <div class="join-meeting-container">
-    <div class="video-display">
-      <video id="localVideo" autoplay muted></video>
-      <div class="btns-wrapper">
-        <div class="call-btns">
-          <button 
-            id="mic-wrap" 
-            type="button"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              version="1.1"
-              xmlns:xlink="http://www.w3.org/1999/xlink"
-              width="24"
-              height="21"
-              x="-1"
-              y="-1"
-              viewBox="0 0 24 24"
-              style="enable-background: new 0 0 512 512"
-              xml:space="preserve"
-            >
-              <g transform="matrix(0.6500000000000006,0,0,0.6500000000000006,4.199912548065181,4.200000000000001)">
-                <g fill="#000">
-                  <path
-                    d="M5.847 12c0 3.314 2.548 6 5.692 6 1.23 0 2.369-.41 3.3-1.11l.678.716A6.393 6.393 0 0 1 11.54 19c-3.669 0-6.642-3.134-6.642-7 0-.552-.425-1-.95-1S3 11.448 3 12c0 4.633 3.322 8.448 7.592 8.945l-.001.055v1H8.693c-.524 0-.949.448-.949 1s.425 1 .949 1h5.693c.524 0 .949-.448.949-1s-.425-1-.949-1h-1.898v-1l-.001-.055a8.274 8.274 0 0 0 4.383-1.913l2.51 2.646c.37.39.971.39 1.342 0 .37-.39.37-1.024 0-1.414L4.62 3.293a.915.915 0 0 0-1.342 0c-.37.39-.37 1.024 0 1.414l2.569 2.707zM6.478 3.251l10.368 10.927c.25-.675.387-1.41.387-2.178V6c0-3.314-2.55-6-5.693-6-2.205 0-4.116 1.32-5.062 3.251zM17.569 14.94l1.409 1.485A9.337 9.337 0 0 0 20.078 12c0-.552-.425-1-.949-1s-.949.448-.949 1c0 1.05-.219 2.046-.612 2.94z"
-                    fill="#acacac"
-                    opacity="1"
-                    data-original="#000000"
-                    class=""
-                  ></path>
-                </g>
-              </g>
-            </svg>
-          </button>
-
-          <button 
-            class="blue-btn-txt"
-            id="end-call-wrap" 
-            type="button"
-          >
-            End
-          </button>
-
-          <button 
-            type="button"
-            id="video-wrap"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg" width="24"
-              height="19" fill="#acacac" viewBox="0 0 640 512">
-              <path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7l-86.4-67.7 13.8 9.2c9.8 6.5 22.4 7.2 32.9 1.6s16.9-16.4 16.9-28.2l0-256c0-11.8-6.5-22.6-16.9-28.2s-23-5-32.9 1.6l-96 64L448 174.9l0 17.1 0 128 0 5.8-32-25.1L416 128c0-35.3-28.7-64-64-64L113.9 64 38.8 5.1zM407 416.7L32.3 121.5c-.2 2.1-.3 4.3-.3 6.5l0 256c0 35.3 28.7 64 64 64l256 0c23.4 0 43.9-12.6 55-31.3z"/>
-            </svg>
-          </button>
-        </div>
-      </div>
-    </div>
+      <slot name="videoDisplay"></slot>
       <form class="user-input-wrap" id="meeting-form">        
         <label for="name-input">Name:</label>
         <input 
@@ -277,9 +141,6 @@ template.innerHTML = `
 `;
 
 class JoinMeetingMember extends HTMLElement {
-  localStream;
-  micEnabled = false;
-  cameraEnabled = false;
   constructor() {
     super();
     this.shadowRootRef = this.attachShadow({ mode: "open" });
@@ -289,22 +150,6 @@ class JoinMeetingMember extends HTMLElement {
 
   connectedCallback() {
     const meetingForm = this.shadowRootRef.getElementById("meeting-form");
-    const toogleVideoButton = this.shadowRootRef.getElementById("video-wrap");
-    const toggleMicButton = this.shadowRootRef.getElementById("mic-wrap");
-    sessionStorage.setItem("cameraState", this.cameraEnabled);
-    sessionStorage.setItem("micState", this.micEnabled);
-
-    if (toogleVideoButton) {
-      toogleVideoButton.addEventListener("click", this.handleActivateCamera);
-    } else {
-      console.error("Video button not found");
-    }
-
-    if (toggleMicButton) {
-      toggleMicButton.addEventListener("click", this.handleActivateMic);
-    } else {
-      console.error("Mic button not found");
-    }
 
     if (meetingForm) {
       meetingForm.addEventListener("submit", this.handleSubmit);
@@ -337,7 +182,7 @@ class JoinMeetingMember extends HTMLElement {
             fill="#DAD9D9"
           />
         </svg>`;
-        sessionStorage.setItem("cameraState", this.cameraEnabled);
+        localStorage.setItem("cameraState", this.cameraEnabled);
       } else {
         if (this.localStream) {
           const videoTrack = this.localStream.getVideoTracks()[0];
@@ -351,7 +196,7 @@ class JoinMeetingMember extends HTMLElement {
           height="19" fill="#acacac" viewBox="0 0 640 512">
           <path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7l-86.4-67.7 13.8 9.2c9.8 6.5 22.4 7.2 32.9 1.6s16.9-16.4 16.9-28.2l0-256c0-11.8-6.5-22.6-16.9-28.2s-23-5-32.9 1.6l-96 64L448 174.9l0 17.1 0 128 0 5.8-32-25.1L416 128c0-35.3-28.7-64-64-64L113.9 64 38.8 5.1zM407 416.7L32.3 121.5c-.2 2.1-.3 4.3-.3 6.5l0 256c0 35.3 28.7 64 64 64l256 0c23.4 0 43.9-12.6 55-31.3z"/>
         </svg>`;
-        sessionStorage.setItem("cameraState", this.cameraEnabled);
+        localStorage.setItem("cameraState", this.cameraEnabled);
       }
     } catch (error) {
       console.error("Error toggling camera:", error);
@@ -380,7 +225,7 @@ class JoinMeetingMember extends HTMLElement {
                 fill="#DAD9D9"
                 />
             </svg>`;
-        sessionStorage.setItem("micState", this.micEnabled);
+        localStorage.setItem("micState", this.micEnabled);
       } else {
         this.micEnabled = false;
         activeMicIcon.innerHTML = `<svg
@@ -407,7 +252,7 @@ class JoinMeetingMember extends HTMLElement {
               </g>
             </g>
           </svg>`;
-        sessionStorage.setItem("micState", this.micEnabled);
+        localStorage.setItem("micState", this.micEnabled);
       }
     } catch (error) {
       console.error("Error toggling mic:", error);

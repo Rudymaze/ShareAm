@@ -77,8 +77,8 @@ function visualizeAudio() {
 }
 
 //Toggle microphone with visualization control
-// const handle
-toggleMicButton.addEventListener("click", async () => {
+
+const handleActivateMic = async () => {
   localStream = await navigator.mediaDevices.getUserMedia({
     audio: true,
   });
@@ -136,7 +136,6 @@ toggleMicButton.addEventListener("click", async () => {
       }
       isVisualizing = true;
       visualizeAudio();
-      visualizeWaveshadow();
     } else {
       isVisualizing = false;
       lineWave.forEach((span) => {
@@ -147,4 +146,5 @@ toggleMicButton.addEventListener("click", async () => {
       waveShadow1.style.width = "100px";
     }
   }
-});
+};
+toggleMicButton.addEventListener("click", handleActivateMic);

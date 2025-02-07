@@ -5,10 +5,11 @@ const lineWave = document.querySelectorAll(".line-wave");
 
 // ---------- ACTIVATION MIC ---------- //
 let localStream;
-let micEnabled = false;
+let micEnabled = sessionStorage.getItem("micState") === "true";
 let audioContext;
 let analyser;
 let microphone;
+console.log("micEnabled1", micEnabled);
 
 // Function to initialize audio processing
 async function initAudioProcessing() {
@@ -129,6 +130,7 @@ const handleActivateMic = async () => {
             </g>
             </svg>`;
     toggleMicButton.prepend(activeMicIcon);
+    // console.log("micEnabled3", micEnabledEnabled);
 
     if (micEnabled) {
       if (!audioContext) {
@@ -148,3 +150,17 @@ const handleActivateMic = async () => {
   }
 };
 toggleMicButton.addEventListener("click", handleActivateMic);
+
+// Toggle Mic
+const handleMicToggle = () => {
+  micEnabled = !micEnabled;
+  sessionStorage.setItem("micState", micEnabled);
+  handleActivateMic();
+};
+
+activeMicIcon.addEventListener("click", handleMicToggle);
+
+document.addEventListener("DOMContentLoaded", () => {
+  micEnabled = sessionStorage.getItem("micState") === "true";
+  handleActivateMic();
+});

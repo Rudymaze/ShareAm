@@ -243,17 +243,15 @@
     </div>
 
     <modal-container id="host-container">
-      <join-meeting-host
-        id="join-meeting-host"
-        slot="content"
-      ></join-meeting-host>
+      <join-meeting-host slot="content">
+        <join-video id="join-video-host" slot="videoDisplay"></join-video>
+      </join-meeting-host>
     </modal-container>
 
     <modal-container id="member-container">
-      <join-meeting-member
-        id="join-meeting-member"
-        slot="content"
-      ></join-meeting-member>
+      <join-meeting-member slot="content">
+        <join-video id="join-video-member" slot="videoDisplay"></join-video>
+      </join-meeting-member>
     </modal-container>
 
     <!-- <modal-container id="rate-call-container">

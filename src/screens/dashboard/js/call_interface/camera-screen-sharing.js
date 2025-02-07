@@ -5,10 +5,8 @@ const animationWave = document.getElementById("animation-wave");
 
 // ---------- ACTIVATION OF CAMERA AND SHARING OF SCREEN ---------- //
 let localStream;
-let cameraEnabled = !Boolean(sessionStorage.getItem("cameraState"));
+let cameraEnabled = sessionStorage.getItem("cameraState") === "true";
 let isShareScreen;
-
-console.log("cameraEnabled1", cameraEnabled);
 
 const handleWavePhoto = () => {
   if (cameraEnabled || isShareScreen) {
@@ -57,7 +55,7 @@ document
   .getElementById("share-screen-btn")
   .addEventListener("click", startScreenSharing);
 
-// Toggle camera
+// Activates camera
 const handleCameraActivation = async () => {
   try {
     if (cameraEnabled) {
@@ -94,20 +92,18 @@ const handleCameraActivation = async () => {
   } catch (error) {
     console.error("Error toggling camera:", error);
   }
-  console.log("cameraEnabled2", cameraEnabled);
 };
 
+// Toggle camera
 const handleCameraToggle = () => {
-  if (cameraEnabled) {
-    cameraEnabled = false;
-    handleCameraActivation();
-  } else {
-    cameraEnabled = true;
-    handleCameraActivation();
-  }
-  console.log("cameraEnabled3", cameraEnabled);
+  cameraEnabled = !cameraEnabled;
+  sessionStorage.setItem("cameraState", cameraEnabled);
+  handleCameraActivation();
 };
+
 activateCameraIcon.addEventListener("click", handleCameraToggle);
 
-// handleCameraActivation();
-document.addEventListener("DOMContentLoaded", handleCameraActivation);
+document.addEventListener("DOMContentLoaded", () => {
+  cameraEnabled = sessionStorage.getItem("cameraState") === "true";
+  handleCameraActivation();
+});

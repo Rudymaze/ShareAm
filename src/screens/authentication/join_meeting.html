@@ -20,9 +20,18 @@
       type="module"
     ></script>
     <script src="../../components/modal-container.js" type="module"></script>
-    <script src="../../components/modals/rate-call-modal.js" type="module"></script>
-    <script src="../../components/modals/join-meeting-video.js" type="module"></script>
-
+    <script
+      src="../../components/modals/rate-call-modal.js"
+      type="module"
+    ></script>
+    <script
+      src="../../components/modals/rate-call-modal.js"
+      type="module"
+    ></script>
+    <script
+      src="../../components/modals/join-meeting-video.js"
+      type="module"
+    ></script>
   </head>
 
   <body>
@@ -257,7 +266,7 @@
       const joinVideoHost = document.getElementById("join-video-host");
       const joinVideoMember = document.getElementById("join-video-member");
       const form = document.getElementById("meetingForm");
-      
+
       const openModal = (modal) => {
         modal.open();
       };
@@ -271,25 +280,35 @@
         const meetingId = document.getElementById("meeting_id").value;
         localStorage.setItem("meetingToken", meetingId);
         openModal(memberContainer);
-      }
+      };
       form.addEventListener("submit", joinMeeting);
 
       startMeetingBtn.addEventListener("click", () => openModal(hostContainer));
 
       // Ensure the event listener for the end call button is attached after the component is defined
-      customElements.whenDefined('join-video').then(() => {
-        const hostEndCallButton = joinVideoHost.shadowRoot.querySelector("#end-call-wrap");
+      customElements.whenDefined("join-video").then(() => {
+        const hostEndCallButton =
+          joinVideoHost.shadowRoot.querySelector("#end-call-wrap");
         if (hostEndCallButton) {
-          hostEndCallButton.addEventListener("click", () => closeModal(hostContainer));
+          hostEndCallButton.addEventListener("click", () => {
+            sessionStorage.setItem("cameraState", false);
+            sessionStorage.setItem("micState", false);
+            closeModal(hostContainer);
+          });
         } else {
           console.error("End call button not found");
         }
       });
 
-      customElements.whenDefined('join-video').then(() => {
-        const memberEndCallButton = joinVideoMember.shadowRoot.querySelector("#end-call-wrap");
+      customElements.whenDefined("join-video").then(() => {
+        const memberEndCallButton =
+          joinVideoMember.shadowRoot.querySelector("#end-call-wrap");
         if (memberEndCallButton) {
-          memberEndCallButton.addEventListener("click", () => closeModal(memberContainer));
+          memberEndCallButton.addEventListener("click", () => {
+            sessionStorage.setItem("cameraState", false);
+            sessionStorage.setItem("micState", false);
+            closeModal(memberContainer);
+          });
         } else {
           console.error("End call button not found");
         }
@@ -303,7 +322,6 @@
       //   }
       // };
       // handleShowRateCallModal()
-
     </script>
     <script src="../../renderer.js"></script>
   </body>

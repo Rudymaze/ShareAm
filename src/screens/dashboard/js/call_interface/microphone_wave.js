@@ -77,6 +77,7 @@ function visualizeAudio() {
 }
 
 //Toggle microphone with visualization control
+// const handle
 toggleMicButton.addEventListener("click", async () => {
   localStream = await navigator.mediaDevices.getUserMedia({
     audio: true,

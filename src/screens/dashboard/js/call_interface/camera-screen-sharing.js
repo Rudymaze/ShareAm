@@ -5,8 +5,18 @@ const animationWave = document.getElementById("animation-wave");
 
 // ---------- ACTIVATION OF CAMERA AND SHARING OF SCREEN ---------- //
 let localStream;
-let cameraEnabled = false;
+let cameraEnabled = !Boolean(sessionStorage.getItem("cameraState"));
 let isShareScreen;
+
+console.log("cameraEnabled1", cameraEnabled);
+
+const handleWavePhoto = () => {
+  if (cameraEnabled || isShareScreen) {
+    animationWave.style.display = "none";
+  } else {
+    animationWave.style.display = "block";
+  }
+};
 
 const startScreenSharing = async () => {
   if (shareScreenVideo.srcObject === null) {
@@ -48,14 +58,13 @@ document
   .addEventListener("click", startScreenSharing);
 
 // Toggle camera
-activateCameraIcon.addEventListener("click", async () => {
+const handleCameraActivation = async () => {
   try {
-    if (!cameraEnabled) {
+    if (cameraEnabled) {
       localStream = await navigator.mediaDevices.getUserMedia({
         video: true,
       });
       cameraVideo.srcObject = localStream;
-      cameraEnabled = true;
       handleWavePhoto();
       activateCameraIcon.innerHTML = `<svg
                     width="24"
@@ -75,7 +84,6 @@ activateCameraIcon.addEventListener("click", async () => {
         if (videoTrack) videoTrack.stop();
       }
       cameraVideo.srcObject = null;
-      cameraEnabled = false;
       handleWavePhoto();
       activateCameraIcon.innerHTML = `<svg
                   xmlns="http://www.w3.org/2000/svg"  width="24"
@@ -86,12 +94,20 @@ activateCameraIcon.addEventListener("click", async () => {
   } catch (error) {
     console.error("Error toggling camera:", error);
   }
-});
-
-const handleWavePhoto = () => {
-  if (cameraEnabled || isShareScreen) {
-    animationWave.style.display = "none";
-  } else {
-    animationWave.style.display = "block";
-  }
+  console.log("cameraEnabled2", cameraEnabled);
 };
+
+const handleCameraToggle = () => {
+  if (cameraEnabled) {
+    cameraEnabled = false;
+    handleCameraActivation();
+  } else {
+    cameraEnabled = true;
+    handleCameraActivation();
+  }
+  console.log("cameraEnabled3", cameraEnabled);
+};
+activateCameraIcon.addEventListener("click", handleCameraToggle);
+
+// handleCameraActivation();
+document.addEventListener("DOMContentLoaded", handleCameraActivation);

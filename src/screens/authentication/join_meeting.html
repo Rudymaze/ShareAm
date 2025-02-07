@@ -263,8 +263,8 @@
       const hostContainer = document.getElementById("host-container");
       // const rateCallContainer = document.getElementById("rate-call-container");
       const startMeetingBtn = document.getElementById("start-meeting-btn");
-      const joinMeetingHost = document.getElementById("join-meeting-host");
-      const joinMeetingMember = document.getElementById("join-meeting-member");
+      const joinVideoHost = document.getElementById("join-video-host");
+      const joinVideoMember = document.getElementById("join-video-member");
       const form = document.getElementById("meetingForm");
 
       const openModal = (modal) => {
@@ -286,27 +286,27 @@
       startMeetingBtn.addEventListener("click", () => openModal(hostContainer));
 
       // Ensure the event listener for the end call button is attached after the component is defined
-      customElements.whenDefined("join-meeting-host").then(() => {
+      customElements.whenDefined("join-video").then(() => {
         const hostEndCallButton =
-          joinMeetingHost.shadowRoot.querySelector("#end-call-wrap");
+          joinVideoHost.shadowRoot.querySelector("#end-call-wrap");
         if (hostEndCallButton) {
           hostEndCallButton.addEventListener("click", () =>
             closeModal(hostContainer)
           );
         } else {
-          console.error("Host end call button not found");
+          console.error("End call button not found");
         }
       });
 
-      customElements.whenDefined("join-meeting-member").then(() => {
+      customElements.whenDefined("join-video").then(() => {
         const memberEndCallButton =
-          joinMeetingMember.shadowRoot.querySelector("#end-call-wrap");
+          joinVideoMember.shadowRoot.querySelector("#end-call-wrap");
         if (memberEndCallButton) {
           memberEndCallButton.addEventListener("click", () =>
             closeModal(memberContainer)
           );
         } else {
-          console.error("Member end call button not found");
+          console.error("End call button not found");
         }
       });
 

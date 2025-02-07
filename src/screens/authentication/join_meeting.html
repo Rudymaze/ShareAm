@@ -290,9 +290,11 @@
         const hostEndCallButton =
           joinVideoHost.shadowRoot.querySelector("#end-call-wrap");
         if (hostEndCallButton) {
-          hostEndCallButton.addEventListener("click", () =>
-            closeModal(hostContainer)
-          );
+          hostEndCallButton.addEventListener("click", () => {
+            sessionStorage.setItem("cameraState", false);
+            sessionStorage.setItem("micState", false);
+            closeModal(hostContainer);
+          });
         } else {
           console.error("End call button not found");
         }
@@ -302,9 +304,11 @@
         const memberEndCallButton =
           joinVideoMember.shadowRoot.querySelector("#end-call-wrap");
         if (memberEndCallButton) {
-          memberEndCallButton.addEventListener("click", () =>
-            closeModal(memberContainer)
-          );
+          memberEndCallButton.addEventListener("click", () => {
+            sessionStorage.setItem("cameraState", false);
+            sessionStorage.setItem("micState", false);
+            closeModal(memberContainer);
+          });
         } else {
           console.error("End call button not found");
         }

@@ -292,7 +292,6 @@ template.innerHTML = `
    
 `;
 
-
 class RateCall extends HTMLElement {
   constructor() {
     super();
@@ -313,15 +312,14 @@ class RateCall extends HTMLElement {
 
   handleCallRating = () => {
     this.gotojoinmeeting();
-  }
+  };
 
   gotojoinmeeting = async () => {
-    ipcRenderer.send('navigate-to-join-meeting');
-  }
+    ipcRenderer.send("navigate-to-join-meeting");
+  };
 }
 
 customElements.define("rate-call", RateCall);
-
 
 // class RateCall extends HTMLElement {
 //   constructor() {
@@ -342,11 +340,11 @@ customElements.define("rate-call", RateCall);
 //   }
 
 //   handleCallRating = () => {
-//     // const meetingToken = localStorage.getItem("meetingToken");
+//     // const meetingToken = sessionStorage.getItem("meetingToken");
 // this.gotojoinmeeting();
 // // if (meetingToken) {
 // //   this.gotojoinmeeting();
-// //   // localStorage.removeItem("meetingToken");
+// //   // sessionStorage.removeItem("meetingToken");
 // // }
 //   }
 
@@ -357,11 +355,8 @@ customElements.define("rate-call", RateCall);
 
 // customElements.define("rate-call", RateCall);
 
-
-
-
-
-{/* <div className="flex space-x-3 mt-2">
+{
+  /* <div className="flex space-x-3 mt-2">
 {[1, 2, 3, 4, 5].map((num) => (
   <button key={num} onClick={() => setRating(num)}>
     <StarIcon
@@ -370,4 +365,5 @@ customElements.define("rate-call", RateCall);
     />
   </button>
 ))}
-</div> */}
+</div> */
+}

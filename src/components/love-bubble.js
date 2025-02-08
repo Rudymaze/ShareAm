@@ -45,8 +45,6 @@ template.innerHTML = `
     </span>
 `;
 
-
-
 class LoveBubble extends HTMLElement {
   triggerHeart;
   constructor() {
@@ -58,7 +56,7 @@ class LoveBubble extends HTMLElement {
 
   connectedCallback() {
     this.triggerHeart = this.shadowRoot.getElementById("trigger-heart");
-    
+
     this.triggerHeart.addEventListener("click", this.handleTriggerHeart);
   }
   handleTriggerHeart = () => {
@@ -78,11 +76,11 @@ class LoveBubble extends HTMLElement {
     const containerHeight = heartContainer.offsetHeight;
 
     const startX = Math.random() * containerWidth;
-    const startY = containerHeight;
+    // const startY = containerHeight;
 
     heartCopy.style.right = `${Math.round(startX) + 10}%`;
     heartCopy.style.left = `${Math.round(startX) + 80}%`;
-    heartCopy.style.top = `${startY - 130}%`;
+    // heartCopy.style.top = `${startY - 130}%`;
 
     heartContainer.appendChild(heartCopy);
 
@@ -92,4 +90,3 @@ class LoveBubble extends HTMLElement {
   };
 }
 customElements.define("love-bubble", LoveBubble);
-

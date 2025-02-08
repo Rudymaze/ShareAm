@@ -20,7 +20,18 @@
       type="module"
     ></script>
     <script src="../../components/modal-container.js" type="module"></script>
-    <script src="../../components/modals/rate-call-modal.js" type="module"></script>
+    <script
+      src="../../components/modals/rate-call-modal.js"
+      type="module"
+    ></script>
+    <script
+      src="../../components/modals/rate-call-modal.js"
+      type="module"
+    ></script>
+    <script
+      src="../../components/modals/join-meeting-video.js"
+      type="module"
+    ></script>
   </head>
 
   <body>
@@ -232,11 +243,15 @@
     </div>
 
     <modal-container id="host-container">
-      <join-meeting-host id="join-meeting-host" slot="content"></join-meeting-host>
+      <join-meeting-host slot="content">
+        <join-video id="join-video-host" slot="videoDisplay"></join-video>
+      </join-meeting-host>
     </modal-container>
 
     <modal-container id="member-container">
-      <join-meeting-member id="join-meeting-member" slot="content"></join-meeting-member>
+      <join-meeting-member slot="content">
+        <join-video id="join-video-member" slot="videoDisplay"></join-video>
+      </join-meeting-member>
     </modal-container>
 
     <!-- <modal-container id="rate-call-container">
@@ -248,10 +263,10 @@
       const hostContainer = document.getElementById("host-container");
       // const rateCallContainer = document.getElementById("rate-call-container");
       const startMeetingBtn = document.getElementById("start-meeting-btn");
-      const joinMeetingHost = document.getElementById("join-meeting-host");
-      const joinMeetingMember = document.getElementById("join-meeting-member");
+      const joinVideoHost = document.getElementById("join-video-host");
+      const joinVideoMember = document.getElementById("join-video-member");
       const form = document.getElementById("meetingForm");
-      
+
       const openModal = (modal) => {
         modal.open();
       };
@@ -265,27 +280,37 @@
         const meetingId = document.getElementById("meeting_id").value;
         localStorage.setItem("meetingToken", meetingId);
         openModal(memberContainer);
-      }
+      };
       form.addEventListener("submit", joinMeeting);
 
       startMeetingBtn.addEventListener("click", () => openModal(hostContainer));
 
       // Ensure the event listener for the end call button is attached after the component is defined
-      customElements.whenDefined('join-meeting-host').then(() => {
-        const hostEndCallButton = joinMeetingHost.shadowRoot.querySelector("#end-call-wrap");
+      customElements.whenDefined("join-video").then(() => {
+        const hostEndCallButton =
+          joinVideoHost.shadowRoot.querySelector("#end-call-wrap");
         if (hostEndCallButton) {
-          hostEndCallButton.addEventListener("click", () => closeModal(hostContainer));
+          hostEndCallButton.addEventListener("click", () => {
+            sessionStorage.setItem("cameraState", false);
+            sessionStorage.setItem("micState", false);
+            closeModal(hostContainer);
+          });
         } else {
-          console.error("Host end call button not found");
+          console.error("End call button not found");
         }
       });
 
-      customElements.whenDefined('join-meeting-member').then(() => {
-        const memberEndCallButton = joinMeetingMember.shadowRoot.querySelector("#end-call-wrap");
+      customElements.whenDefined("join-video").then(() => {
+        const memberEndCallButton =
+          joinVideoMember.shadowRoot.querySelector("#end-call-wrap");
         if (memberEndCallButton) {
-          memberEndCallButton.addEventListener("click", () => closeModal(memberContainer));
+          memberEndCallButton.addEventListener("click", () => {
+            sessionStorage.setItem("cameraState", false);
+            sessionStorage.setItem("micState", false);
+            closeModal(memberContainer);
+          });
         } else {
-          console.error("Member end call button not found");
+          console.error("End call button not found");
         }
       });
 
@@ -297,7 +322,6 @@
       //   }
       // };
       // handleShowRateCallModal()
-
     </script>
     <script src="../../renderer.js"></script>
   </body>

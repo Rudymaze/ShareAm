@@ -18,8 +18,6 @@ const copyMeetingLinkTxt = document.querySelector(".copy-meeting-link-txt");
 const callBtn = document.getElementById("call-btn");
 // const rateCallContainer = document.getElementById("rate-call-container");
 
-
-
 // ------- ADD USER POPUP -------- //
 const handleAddUserPopup = () => {
   addUsers.forEach((item) => {
@@ -28,29 +26,32 @@ const handleAddUserPopup = () => {
     addUserList.innerHTML = `
                   <div>
                       <span class="prof-pic">
-                       ${item.image
-        ? `
+                       ${
+                         item.image
+                           ? `
                             <img
                                 src="${item.image}"
                                 alt="User Profile Pic"
                             />
                             `
-        : `
+                           : `
                             <div class="user-profile-pic-placeholder">NU</div>`
-      } 
+                       } 
                       </div>
                       </span>
                       <p class="username-txt">${item.name}</p>
                       <span class="online-status-vidoe-icon">
                       <div class="online-stat">
-                        <p class="online-status-mode" style="background-color: ${item.status === "active" ? "#3cea43" : "orange"
-      }">
+                        <p class="online-status-mode" style="background-color: ${
+                          item.status === "active" ? "#3cea43" : "orange"
+                        }">
                         </p>
                         <p class="online-status-text">${item.statusText}</p>
                       </div>
                       <div class="video-icon">
-                      ${item.videoIcon
-        ? `<svg
+                      ${
+                        item.videoIcon
+                          ? `<svg
                           width="32"
                           height="31"
                           viewBox="0 0 25 24"
@@ -66,7 +67,7 @@ const handleAddUserPopup = () => {
                             fill="#388E3C"
                           />
                         </svg>`
-        : `<svg
+                          : `<svg
                           width="35"
                           height="24"
                           viewBox="0 0 25 24"
@@ -78,7 +79,7 @@ const handleAddUserPopup = () => {
                             fill="#E4E4E4"
                           />
                         </svg>`
-      }
+                      }
                       </div>
                       </span>
                     </div>
@@ -137,10 +138,9 @@ const handleTab = () => {
 };
 handleTab();
 
-
 // ---------- COPY MEETING LINK ---------- //
 const handleCopyMeetingLink = () => {
-  const meetingToken = localStorage.getItem("meetingToken");
+  const meetingToken = sessionStorage.getItem("meetingToken");
   navigator.clipboard.writeText(meetingToken);
   copyMeetingLinkTxt.textContent = "Meeting link copied";
   setTimeout(() => {
@@ -148,7 +148,6 @@ const handleCopyMeetingLink = () => {
   }, 1000);
 };
 copyMeetingLink.addEventListener("click", handleCopyMeetingLink);
-
 
 // -------- EMOJI OVERLAY ----------- //
 
@@ -185,7 +184,7 @@ const displayAttachOverlay = () => {
 inputAttachments.addEventListener("click", displayAttachOverlay);
 
 const handleMeetingState = () => {
-  const meetingToken = localStorage.getItem("meetingToken");
+  const meetingToken = sessionStorage.getItem("meetingToken");
 
   if (meetingToken) {
     sidebarContainer.style.display = "none";
@@ -211,25 +210,24 @@ const openModal = (modal) => {
 };
 
 const handleEndCall = () => {
-  const meetingToken = localStorage.getItem("meetingToken");
+  const meetingToken = sessionStorage.getItem("meetingToken");
 
   if (meetingToken) {
     gotojoinmeeting();
-    localStorage.removeItem("meetingToken");
+    sessionStorage.removeItem("meetingToken");
   }
   // openModal(rateCallContainer);
 };
 callBtn.addEventListener("click", handleEndCall);
 
 // const handleCallRating = () => {
-//   const meetingToken = localStorage.getItem("meetingToken");
+//   const meetingToken = sessionStorage.getItem("meetingToken");
 //   if (meetingToken) {
 //     gotojoinmeeting();
-//     // localStorage.removeItem("meetingToken");
+//     // sessionStorage.removeItem("meetingToken");
 //   }
 //   // closeModal(rateCallContainer)
 // }
-
 
 // Ensure the event listener for the end call button is attached after the component is defined
 // customElements.whenDefined('rate-call').then(() => {
@@ -240,6 +238,3 @@ callBtn.addEventListener("click", handleEndCall);
 //     console.error("Done button not found");
 //   }
 // });
-
-
-
